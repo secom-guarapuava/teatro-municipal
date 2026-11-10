@@ -1,0 +1,361 @@
+# Painel de edição do site (Pages CMS — https://app.pagescms.org)
+# Cada bloco abaixo vira um item no menu do painel, com formulários em português.
+
+media:
+  input: assets/uploads
+  output: /assets/uploads
+  rename: safe
+  extensions: [jpg, jpeg, png, webp]
+
+content:
+  # ---------------------------------------------------------------- ESPETÁCULOS
+  - name: espetaculos
+    label: Espetáculos
+    type: collection
+    path: _espetaculos
+    format: yaml-frontmatter
+    filename: "{fields.titulo}.md"
+    view:
+      fields: [titulo, data, genero]
+      primary: titulo
+      sort: [data, titulo]
+      default:
+        sort: data
+        order: desc
+    fields:
+      - name: titulo
+        label: Nome do espetáculo
+        type: string
+        required: true
+      - name: data
+        label: Data da primeira sessão
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: horario
+        label: Horário da primeira sessão
+        description: "Escreva no formato 20:00 ou 19:30."
+        type: string
+        default: "20:00"
+      - name: sessoes_extras
+        label: Outras sessões
+        description: Só preencha se o espetáculo tiver mais de uma sessão.
+        type: object
+        list: true
+        fields:
+          - name: data
+            label: Data
+            type: date
+            options:
+              format: yyyy-MM-dd
+          - name: horario
+            label: Horário
+            description: "Formato 20:00"
+            type: string
+      - name: genero
+        label: Linguagem
+        type: select
+        options:
+          values: [Teatro, Dança, Música, Circo, Infantil, Ópera, Festival, Mostra, Cinema, Outro]
+      - name: companhia
+        label: Grupo, companhia ou artista
+        type: string
+      - name: origem
+        label: Cidade de origem
+        description: "Exemplo: Guarapuava (PR)"
+        type: string
+      - name: classificacao
+        label: Classificação indicativa
+        type: select
+        options:
+          values: [Livre, 10 anos, 12 anos, 14 anos, 16 anos, 18 anos]
+      - name: duracao
+        label: Duração
+        description: "Exemplo: 1h20 ou 55 minutos"
+        type: string
+      - name: imagem
+        label: Foto ou cartaz
+        description: Na vertical fica melhor. Sem imagem, o site cria um cartaz com o nome do espetáculo.
+        type: image
+      - name: cor_luz
+        label: Cor da luz do cartaz
+        description: Usada quando não há foto.
+        type: select
+        options:
+          values: [Âmbar, Tijolo, Branco]
+      - name: resumo
+        label: Resumo em uma frase
+        description: Aparece na lista de espetáculos e quando o link é compartilhado no WhatsApp.
+        type: text
+      - name: ingresso_tipo
+        label: Tipo de entrada
+        type: select
+        options:
+          values: ["Gratuito, com retirada de ingresso", "Entrada franca", "Ingresso pago", "Ingresso solidário"]
+      - name: ingresso_link
+        label: Link do ingresso
+        description: Link do Sympla ou da página de retirada. Se ficar vazio, o botão não aparece.
+        type: string
+      - name: ingresso_info
+        label: Informações sobre o ingresso
+        description: "Exemplo: Retirada a partir de 14 de novembro, até dois ingressos por pessoa."
+        type: text
+      - name: acessibilidade
+        label: Acessibilidade
+        description: "Exemplo: Sessão com intérprete de Libras."
+        type: string
+      - name: ficha_tecnica
+        label: Ficha técnica
+        description: "Uma função por linha. Exemplo — Direção: Fulana de Tal"
+        type: text
+      - name: destaque
+        label: Destaque
+        type: boolean
+        default: false
+      - name: body
+        label: Sobre o espetáculo (sinopse)
+        type: rich-text
+
+  # ---------------------------------------------------------------- PAUTAS
+  - name: pautas
+    label: Pautas e datas livres
+    type: file
+    path: _data/pautas.yml
+    format: yaml
+    fields:
+      - name: datas_livres
+        label: Datas livres
+        description: Acrescente as datas em que o teatro está disponível. Quando uma data for ocupada, apague a linha. Datas que já passaram somem sozinhas do site.
+        type: object
+        list: true
+        fields:
+          - name: data
+            label: Data
+            type: date
+            options:
+              format: yyyy-MM-dd
+          - name: periodo
+            label: Período
+            type: select
+            options:
+              values: [Manhã, Tarde, Noite, Dia inteiro]
+          - name: observacao
+            label: Observação
+            description: "Opcional. Exemplo: Montagem a partir das 13h."
+            type: string
+      - name: temporada
+        label: Temporada do próximo credenciamento
+        description: Ano das apresentações. Exemplo — 2027
+        type: number
+      - name: abertura
+        label: Abertura do credenciamento
+        type: date
+        options:
+          format: yyyy-MM-dd
+      - name: encerramento
+        label: Encerramento do credenciamento
+        type: date
+        options:
+          format: yyyy-MM-dd
+      - name: resultado_data
+        label: Data prevista do resultado
+        type: date
+        options:
+          format: yyyy-MM-dd
+      - name: resultado_texto
+        label: Como falar da data do resultado
+        description: "Exemplo: meados de fevereiro"
+        type: string
+      - name: readequacao_fim
+        label: Último dia da readequação
+        type: date
+        options:
+          format: yyyy-MM-dd
+      - name: link_formulario
+        label: Link do formulário de credenciamento
+        description: O botão aparece sozinho durante o período de inscrições.
+        type: string
+      - name: texto_ao_longo_do_ano
+        label: Texto sobre pedidos ao longo do ano
+        type: text
+      - name: orientacoes_oficio
+        label: O que informar no ofício
+        type: text
+
+  # ---------------------------------------------------------------- ACERVO
+  - name: acervo
+    label: Acervo de fotos
+    type: collection
+    path: _acervo
+    format: yaml-frontmatter
+    filename: "{fields.titulo}.md"
+    view:
+      fields: [titulo, data]
+      primary: titulo
+      sort: [data, titulo]
+      default:
+        sort: data
+        order: desc
+    fields:
+      - name: titulo
+        label: Nome do evento
+        type: string
+        required: true
+      - name: data
+        label: Data do evento
+        type: date
+        options:
+          format: yyyy-MM-dd
+      - name: link_album
+        label: Link do álbum
+        description: Endereço do álbum completo (Flickr, Google Fotos, Drive ou site da Prefeitura).
+        type: string
+      - name: capa
+        label: Foto de capa
+        description: Só uma foto, de preferência na horizontal.
+        type: image
+      - name: tipo
+        label: O que tem no álbum
+        type: select
+        options:
+          values: [Fotos, Vídeo, Fotos e vídeo]
+      - name: descricao
+        label: Descrição curta
+        type: text
+      - name: credito
+        label: Autoria das fotos
+        type: string
+      - name: destaque
+        label: Destaque
+        description: Marque para apresentações de grande público. O álbum aparece maior e primeiro.
+        type: boolean
+        default: false
+
+  # ---------------------------------------------------------------- FRASES
+  - name: frases
+    label: Frases dos entreatos
+    type: file
+    path: _data/frases.yml
+    format: yaml
+    list: true
+    fields:
+      - name: texto
+        label: Frase
+        type: text
+        required: true
+      - name: autor
+        label: Autor ou autora
+        type: string
+        required: true
+      - name: obra
+        label: Obra (opcional)
+        type: string
+
+  # ---------------------------------------------------------------- O TEATRO
+  - name: o-teatro
+    label: Página O teatro
+    type: file
+    path: o-teatro.md
+    format: yaml-frontmatter
+    fields:
+      - name: layout
+        type: string
+        hidden: true
+        default: teatro
+      - name: permalink
+        type: string
+        hidden: true
+        default: /o-teatro/
+      - name: title
+        label: Título
+        type: string
+      - name: subtitulo
+        label: Subtítulo
+        type: text
+      - name: imagem
+        label: Foto principal (aparece em forma de arco)
+        type: image
+      - name: imagem_descricao
+        label: Descrição da foto principal
+        description: Para pessoas que usam leitor de tela.
+        type: string
+      - name: og_imagem
+        type: string
+        hidden: true
+      - name: galeria
+        label: Fotos do prédio
+        type: object
+        list: true
+        fields:
+          - name: imagem
+            label: Foto
+            type: image
+          - name: descricao
+            label: Legenda
+            type: string
+      - name: ficha
+        label: Ficha técnica do espaço
+        type: object
+        list: true
+        fields:
+          - name: item
+            label: Item
+            type: string
+          - name: descricao
+            label: Descrição
+            type: string
+      - name: body
+        label: História do teatro
+        type: rich-text
+
+  # ---------------------------------------------------------------- GERAL
+  - name: geral
+    label: Contatos e aviso do topo
+    type: file
+    path: _data/geral.yml
+    format: yaml
+    fields:
+      - name: aviso
+        label: Aviso no topo do site
+        description: Opcional. Uma frase curta, por exemplo um aviso de mudança de horário. Deixe vazio para esconder.
+        type: string
+      - name: aviso_link
+        label: Link do aviso
+        type: string
+      - name: whatsapp
+        label: WhatsApp da Secretaria de Cultura
+        description: Só números, com DDD. Exemplo — 42999990000
+        type: string
+      - name: email_cultura
+        label: E-mail para ofícios
+        type: string
+      - name: telefone
+        label: Telefone
+        type: string
+      - name: instagram
+        label: Link do Instagram
+        type: string
+      - name: link_ingressos
+        label: Página geral de ingressos
+        description: Opcional. Aparece nos links úteis do rodapé.
+        type: string
+      - name: nome_teatro
+        label: Nome do teatro
+        type: string
+      - name: endereco
+        label: Endereço
+        type: string
+      - name: bairro_cidade
+        label: Bairro e cidade
+        type: string
+      - name: mapa_link
+        label: Link do mapa
+        type: string
+      - name: logo_prefeitura
+        label: Logo da Prefeitura
+        description: Use o arquivo oficial, sem alterar cores.
+        type: image
+      - name: credito_fotos
+        label: Autoria das fotos do teatro
+        type: string
