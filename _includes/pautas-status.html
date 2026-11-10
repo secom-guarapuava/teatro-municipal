@@ -1,0 +1,24 @@
+{%- assign _p = site.data.pautas -%}
+{%- assign _g = site.data.geral -%}
+<div class="pautas-status" data-pautas
+  data-abertura="{{ _p.abertura | date: '%Y-%m-%d' }}"
+  data-encerramento="{{ _p.encerramento | date: '%Y-%m-%d' }}"
+  data-resultado="{{ _p.resultado_data | date: '%Y-%m-%d' }}"
+  data-readequacao="{{ _p.readequacao_fim | date: '%Y-%m-%d' }}"
+  data-temporada="{{ _p.temporada }}"
+  data-resultado-texto="{{ _p.resultado_texto | escape }}"
+  data-formulario="{{ _p.link_formulario | escape }}">
+  <p class="pautas-status__frase" data-pautas-frase>O credenciamento da temporada {{ _p.temporada }} vai de {% include data.html d=_p.abertura %} a {% include data.html d=_p.encerramento %}.</p>
+  <p class="pautas-status__detalhe" data-pautas-detalhe>{{ _p.texto_ao_longo_do_ano }}</p>
+  <div class="pautas-status__acoes" data-pautas-acoes>
+    {%- if _p.link_formulario and _p.link_formulario != "" -%}
+    <a class="ingresso" href="{{ _p.link_formulario }}" target="_blank" rel="noopener" data-pautas-form>Fazer credenciamento<span class="visualmente-oculto"> (abre em nova aba)</span></a>
+    {%- endif -%}
+    {%- if _g.whatsapp and _g.whatsapp != "" -%}
+    <a class="botao-linha" href="https://wa.me/55{{ _g.whatsapp | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}?text={{ 'Olá! Gostaria de consultar uma data para o Teatro Municipal.' | url_encode }}" target="_blank" rel="noopener" data-pautas-whats>Pedir data pelo WhatsApp<span class="visualmente-oculto"> (abre em nova aba)</span></a>
+    {%- endif -%}
+    {%- if _g.email_cultura and _g.email_cultura != "" -%}
+    <a class="botao-linha" href="mailto:{{ _g.email_cultura }}?subject={{ 'Ofício: pedido de pauta no Teatro Municipal' | url_encode }}" data-pautas-email>Enviar ofício por e-mail</a>
+    {%- endif -%}
+  </div>
+</div>

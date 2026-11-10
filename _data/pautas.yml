@@ -1,0 +1,33 @@
+temporada: 2027
+abertura: 2026-12-26
+encerramento: 2027-01-30
+resultado_data: 2027-02-15
+resultado_texto: meados de fevereiro
+readequacao_fim: 2027-02-28
+link_formulario: ""
+texto_ao_longo_do_ano: >-
+  Depois do credenciamento, as datas que sobram ficam abertas a pedidos ao longo do ano.
+  Chame a Secretaria de Cultura no WhatsApp e envie um ofício para o e-mail da Cultura
+  com a data que você quer. A resposta, deferindo ou não o pedido, chega pelo mesmo e-mail.
+orientacoes_oficio: >-
+  No ofício, informe o nome do grupo ou do proponente, a atividade, a data e o horário
+  pretendidos e um telefone para contato.
+datas_livres:
+  - data: 2026-11-18
+    periodo: Noite
+    observacao: ""
+  - data: 2026-11-26
+    periodo: Dia inteiro
+    observacao: ""
+  - data: 2026-12-03
+    periodo: Noite
+    observacao: ""
+  - data: 2026-12-06
+    periodo: Tarde
+    observacao: Montagem a partir das 13h
+  - data: 2026-12-10
+    periodo: Dia inteiro
+    observacao: ""
+  - data: 2026-12-17
+    periodo: Noite
+    observacao: ""

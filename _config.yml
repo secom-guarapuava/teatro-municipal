@@ -1,0 +1,41 @@
+# Teatro Municipal de Guarapuava — configuração do site
+# O conteúdo (espetáculos, datas, acervo, frases, contatos) é editado pelo painel (Pages CMS).
+# Este arquivo só precisa ser mexido por quem cuida da parte técnica.
+
+title: Teatro Municipal de Guarapuava
+description: Programação, pautas e acervo do Teatro Municipal Marina Karam Primak, o palco de Guarapuava desde 2018.
+lang: pt-BR
+timezone: America/Sao_Paulo
+
+# Endereço público do site. Na publicação pelo GitHub Actions estes dois valores
+# são preenchidos automaticamente; só altere se for usar um domínio próprio.
+url: "https://secom-guarapuava.github.io"
+baseurl: ""
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  auto_ids: false
+
+collections:
+  espetaculos:
+    output: true
+    permalink: /espetaculos/:name/
+  acervo:
+    output: false
+
+defaults:
+  - scope:
+      path: ""
+      type: espetaculos
+    values:
+      layout: espetaculo
+
+exclude:
+  - README.md
+  - COMO-ATUALIZAR.md
+  - Gemfile
+  - Gemfile.lock
+  - scripts/
+  - vendor/
+  - node_modules/

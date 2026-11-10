@@ -1,0 +1,2 @@
+{%- assign _h = include.h | default: "" | strip | split: ":" -%}
+{%- if _h.size > 0 -%}{%- assign _hh = _h[0] | plus: 0 -%}{%- if _h[1] and _h[1] != "00" -%}{{ _hh }}h{{ _h[1] }}{%- else -%}{{ _hh }}h{%- endif -%}{%- endif -%}

@@ -1,0 +1,21 @@
+{%- comment -%} Linha de espetáculo em cartaz (lista estilo programa de teatro). {%- endcomment -%}
+{%- assign _e = include.e -%}
+{%- assign _ini = _e.data | date: "%Y-%m-%d" -%}
+{%- assign _m = _ini | date: "%-m" | minus: 1 -%}
+{%- assign _w = _ini | date: "%w" | plus: 0 -%}
+<li class="sessao" data-fim="{{ include.fim }}" data-genero="{{ _e.genero | escape }}">
+  <div class="sessao__data" aria-hidden="true">
+    <span class="sessao__dia">{{ _ini | date: "%-d" }}</span>
+    <span class="sessao__mes">{{ site.data.i18n.meses[_m] }}</span>
+  </div>
+  <div class="sessao__corpo">
+    <p class="sessao__quando">{% include data.html d=_ini formato="semana" %}, às {% include hora.html h=_e.horario %}{% if _e.sessoes_extras.size > 0 %}, e mais {{ _e.sessoes_extras.size }} {% if _e.sessoes_extras.size == 1 %}sessão{% else %}sessões{% endif %}{% endif %}</p>
+    <h3 class="sessao__titulo"><a href="{{ _e.url | relative_url }}" class="sessao__link">{{ _e.titulo }}</a></h3>
+    <p class="sessao__resumo">{{ _e.resumo }}</p>
+    <p class="sessao__info">{{ _e.genero }}{% if _e.companhia and _e.companhia != "" %}, com {{ _e.companhia }}{% endif %}. {% if _e.classificacao == "Livre" %}Classificação livre{% else %}Classificação {{ _e.classificacao }}{% endif %}. {{ _e.ingresso_tipo }}.</p>
+    {%- if _e.ingresso_link and _e.ingresso_link != "" -%}
+    <a class="ingresso" href="{{ _e.ingresso_link }}" target="_blank" rel="noopener">{% if _e.ingresso_tipo contains "pago" %}Comprar ingresso{% else %}Retirar ingresso{% endif %}<span class="visualmente-oculto"> para {{ _e.titulo }} (abre em nova aba)</span></a>
+    {%- endif -%}
+  </div>
+  <div class="sessao__cartaz{% unless _e.imagem and _e.imagem != "" %} sessao__cartaz--tipo{% endunless %}">{% include cartaz.html e=_e %}</div>
+</li>

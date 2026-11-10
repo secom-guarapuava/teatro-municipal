@@ -1,0 +1,58 @@
+---
+layout: default
+title: Programação
+description: Todos os espetáculos em cartaz no Teatro Municipal de Guarapuava, com datas, horários e ingressos.
+secao: programacao
+---
+{%- include ordenar-espetaculos.html -%}
+<header class="pagina-cabeca envelope">
+  <h1 class="pagina-cabeca__titulo">Programação</h1>
+  <p class="pagina-cabeca__intro">Tudo o que vai subir ao palco do Teatro Municipal, na ordem das datas. Clique em um espetáculo para ver a sinopse, a ficha técnica e como garantir o ingresso.</p>
+</header>
+
+<section class="secao" style="padding-top:0" aria-label="Espetáculos em cartaz">
+  <div class="envelope">
+    {%- capture _generos -%}{%- for k in em_cartaz -%}{%- assign _k = k | split: "|" -%}{%- assign e = site.espetaculos | where: "path", _k[2] | first -%}{{ e.genero }}{% unless forloop.last %}~~{% endunless %}{%- endfor -%}{%- endcapture -%}
+    {%- assign _generos = _generos | split: "~~" | uniq | sort -%}
+    {%- if _generos.size > 1 -%}
+    <div class="filtros" data-filtros role="group" aria-label="Filtrar por linguagem">
+      <button type="button" data-filtro="" aria-pressed="true">Tudo</button>
+      {%- for g in _generos -%}<button type="button" data-filtro="{{ g }}" aria-pressed="false">{{ g }}</button>{%- endfor -%}
+    </div>
+    <p class="visualmente-oculto" aria-live="polite" data-filtro-vazio></p>
+    {%- endif -%}
+
+    <ol class="sessoes" data-sessoes>
+      {%- for k in em_cartaz -%}
+      {%- assign _k = k | split: "|" -%}
+      {%- assign e = site.espetaculos | where: "path", _k[2] | first -%}
+      {% assign _kf = _k[1] %}{% include sessao.html e=e fim=_kf %}
+      {%- endfor -%}
+    </ol>
+    <p class="vazio" data-sessoes-vazio{% if em_cartaz.size > 0 %} hidden{% endif %}>
+      Nenhum espetáculo marcado por enquanto. A próxima temporada está sendo montada.<br>
+      <a class="link" href="{{ '/pautas/' | relative_url }}">Veja as datas livres e proponha o seu</a>
+    </p>
+  </div>
+</section>
+
+{% include entreato.html i=3 gel="carmim" %}
+
+{%- if ja_passaram.size > 0 -%}
+<section class="secao plateia" aria-labelledby="titulo-passaram">
+  <div class="envelope">
+    <h2 class="subtitulo" id="titulo-passaram">Já estiveram em cena</h2>
+    <ul class="arquivo">
+      {%- for k in ja_passaram limit: 40 -%}
+      {%- assign _k = k | split: "|" -%}
+      {%- assign e = site.espetaculos | where: "path", _k[2] | first -%}
+      <li class="arquivo__item">
+        <span class="arquivo__data">{% include data.html d=e.data formato="ano" %}</span>
+        <h3 class="arquivo__titulo"><a href="{{ e.url | relative_url }}">{{ e.titulo }}</a></h3>
+        <span class="arquivo__genero">{{ e.genero }}</span>
+      </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+{%- endif -%}

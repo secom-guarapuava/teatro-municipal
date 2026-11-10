@@ -1,0 +1,22 @@
+{%- assign _a = include.a -%}
+{%- assign _tem_link = false -%}{%- if _a.link_album and _a.link_album != "" -%}{%- assign _tem_link = true -%}{%- endif -%}
+{%- assign _m = _a.data | date: "%-m" | minus: 1 -%}
+<li class="album{% if include.destaque %} album--destaque{% endif %}">
+  {%- if _tem_link -%}<a class="album__capa" href="{{ _a.link_album }}" target="_blank" rel="noopener" aria-label="Abrir o álbum {{ _a.titulo | escape }} (abre em nova aba)">{%- else -%}<div class="album__capa">{%- endif -%}
+    {%- if _a.capa and _a.capa != "" -%}
+    <img src="{{ _a.capa | relative_url }}" alt="" loading="lazy" decoding="async">
+    {%- else -%}
+    <div class="cartaz cartaz--ambar"><div class="cartaz__tipo" aria-hidden="true"><span class="cartaz__genero">{{ _a.tipo | default: "Fotos" }}</span><span class="cartaz__titulo">{{ _a.titulo }}</span></div></div>
+    {%- endif -%}
+  {%- if _tem_link -%}</a>{%- else -%}</div>{%- endif -%}
+  <div class="album__legenda">
+    <h3 class="album__titulo">{{ _a.titulo }}</h3>
+    <p class="album__meta">{{ site.data.i18n.meses[_m] | capitalize }} de {{ _a.data | date: "%Y" }}.{% if _a.credito and _a.credito != "" %} {{ _a.tipo | default: "Fotos" }} de {{ _a.credito }}.{% endif %}</p>
+    {%- if _a.descricao and _a.descricao != "" -%}<p class="album__descricao">{{ _a.descricao }}</p>{%- endif -%}
+    {%- if _tem_link -%}
+    <a class="link" href="{{ _a.link_album }}" target="_blank" rel="noopener">Abrir álbum<span class="visualmente-oculto"> {{ _a.titulo }} (abre em nova aba)</span></a>
+    {%- else -%}
+    <span class="album__sem-link">Álbum em breve</span>
+    {%- endif -%}
+  </div>
+</li>

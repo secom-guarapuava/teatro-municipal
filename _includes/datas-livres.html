@@ -1,0 +1,23 @@
+{%- comment -%} Datas livres: JSON para o calendário + lista acessível (sem JavaScript também funciona). {%- endcomment -%}
+{%- assign _hoje = site.time | date: "%Y-%m-%d" -%}
+{%- capture _chaves -%}{%- for d in site.data.pautas.datas_livres -%}{{ d.data | date: "%Y-%m-%d" }}|{{ forloop.index0 }}{% unless forloop.last %}~~{% endunless %}{%- endfor -%}{%- endcapture -%}
+{%- assign _ord = _chaves | split: "~~" | sort -%}
+<script type="application/json" data-datas-livres>[{%- for k in _ord -%}{%- assign _k = k | split: "|" -%}{%- assign _i = _k[1] | plus: 0 -%}{%- assign d = site.data.pautas.datas_livres[_i] -%}{"data":{{ _k[0] | jsonify }},"periodo":{{ d.periodo | default: "" | jsonify }},"obs":{{ d.observacao | default: "" | jsonify }}}{% unless forloop.last %},{% endunless %}{%- endfor -%}]</script>
+{%- assign _limite = include.limite | default: 99 -%}
+{%- assign _mostradas = 0 -%}
+<ul class="datas" data-datas-lista>
+  {%- for k in _ord -%}
+  {%- assign _k = k | split: "|" -%}
+  {%- if _k[0] >= _hoje and _mostradas < _limite -%}
+  {%- assign _mostradas = _mostradas | plus: 1 -%}
+  {%- assign _i = _k[1] | plus: 0 -%}
+  {%- assign d = site.data.pautas.datas_livres[_i] -%}
+  {%- assign _m = _k[0] | date: "%-m" | minus: 1 -%}
+  <li class="datas__item" data-data="{{ _k[0] }}">
+    <span class="datas__dia">{{ _k[0] | date: "%-d" }}</span>
+    <span class="datas__texto"><span class="datas__mes">{{ site.data.i18n.meses_curtos[_m] }}, {% assign _kd = _k[0] %}{% include data.html d=_kd formato="diasemana" %}</span><span class="datas__periodo">{{ d.periodo }}{% if d.observacao and d.observacao != "" %}. {{ d.observacao }}{% endif %}</span></span>
+  </li>
+  {%- endif -%}
+  {%- endfor -%}
+</ul>
+<p class="datas__vazio" data-datas-vazio{% if _mostradas > 0 %} hidden{% endif %}>Não há datas livres no momento. Assim que uma data abrir, ela aparece aqui.</p>

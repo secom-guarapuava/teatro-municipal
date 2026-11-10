@@ -1,0 +1,44 @@
+{%- assign _g = site.data.geral -%}
+{%- assign _p = site.data.pautas -%}
+<footer class="rodape" id="visite">
+  <div class="pano" data-pano aria-hidden="true"><p class="pano__texto">Cai o pano.</p></div>
+  <div class="rodape__interno">
+  <div class="rodape__grade">
+    <section class="rodape__bloco" aria-labelledby="rodape-chegar">
+      <h2 id="rodape-chegar">Como chegar</h2>
+      <address>Teatro Municipal {{ _g.nome_teatro }}<br>{{ _g.endereco }}<br>{{ _g.bairro_cidade }}</address>
+      <a class="link" href="{{ _g.mapa_link }}" target="_blank" rel="noopener">Abrir no mapa<span class="visualmente-oculto"> (abre em nova aba)</span></a>
+    </section>
+    <section class="rodape__bloco" aria-labelledby="rodape-contato">
+      <h2 id="rodape-contato">Contato</h2>
+      <ul>
+        {%- if _g.telefone and _g.telefone != "" -%}<li><a class="link" href="tel:+55{{ _g.telefone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}">{{ _g.telefone }}</a></li>{%- endif -%}
+        {%- if _g.whatsapp and _g.whatsapp != "" -%}<li><a class="link" href="https://wa.me/55{{ _g.whatsapp | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}" target="_blank" rel="noopener">WhatsApp da Cultura</a></li>{%- endif -%}
+        {%- if _g.email_cultura and _g.email_cultura != "" -%}<li><a class="link" href="mailto:{{ _g.email_cultura }}">{{ _g.email_cultura }}</a></li>{%- endif -%}
+        {%- if _g.instagram and _g.instagram != "" -%}<li><a class="link" href="{{ _g.instagram }}" target="_blank" rel="noopener">Instagram</a></li>{%- endif -%}
+      </ul>
+    </section>
+    <section class="rodape__bloco" aria-labelledby="rodape-links">
+      <h2 id="rodape-links">Links úteis</h2>
+      <ul>
+        {%- if _p.link_formulario and _p.link_formulario != "" -%}<li><a class="link" href="{{ _p.link_formulario }}" target="_blank" rel="noopener">Formulário de credenciamento</a></li>{%- endif -%}
+        {%- if _g.link_ingressos and _g.link_ingressos != "" -%}<li><a class="link" href="{{ _g.link_ingressos }}" target="_blank" rel="noopener">Retirada de ingressos</a></li>{%- endif -%}
+        <li><a class="link" href="{{ '/programacao/' | relative_url }}">Programação completa</a></li>
+        <li><a class="link" href="{{ '/pautas/' | relative_url }}">Datas livres e credenciamento</a></li>
+        <li><a class="link" href="{{ '/acervo/' | relative_url }}">Acervo de fotos</a></li>
+      </ul>
+    </section>
+    <div class="rodape__mapa">
+      <iframe title="Mapa com a localização do Teatro Municipal de Guarapuava" src="https://www.google.com/maps?q={{ _g.endereco | append: ', ' | append: _g.bairro_cidade | url_encode }}&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+  <div class="rodape__base">
+    {%- if _g.logo_prefeitura and _g.logo_prefeitura != "" -%}
+    <img class="rodape__logo" src="{{ _g.logo_prefeitura | relative_url }}" alt="Prefeitura de Guarapuava" loading="lazy">
+    {%- else -%}
+    <p class="rodape__assinatura">Prefeitura de Guarapuava<br>Secretaria Municipal de Cultura</p>
+    {%- endif -%}
+    {%- if _g.credito_fotos and _g.credito_fotos != "" -%}<p class="rodape__credito">Fotos do teatro: {{ _g.credito_fotos }}</p>{%- endif -%}
+  </div>
+  </div>
+</footer>

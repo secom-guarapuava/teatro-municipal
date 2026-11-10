@@ -1,0 +1,13 @@
+{%- comment -%} Cartaz de um espetáculo: foto enviada pelo painel ou cartaz tipográfico gerado. {%- endcomment -%}
+{%- assign _e = include.e -%}
+{%- assign _cor = _e.cor_luz | default: "Âmbar" | downcase | replace: "â", "a" -%}
+<div class="cartaz cartaz--{{ _cor }}{% if include.grande %} cartaz--grande{% endif %}">
+  {%- if _e.imagem and _e.imagem != "" -%}
+  <img class="cartaz__foto" src="{{ _e.imagem | relative_url }}" alt="{{ include.alt | default: '' }}" loading="{{ include.loading | default: 'lazy' }}" decoding="async">
+  {%- else -%}
+  <div class="cartaz__tipo" aria-hidden="true">
+    <span class="cartaz__genero">{{ _e.genero }}</span>
+    <span class="cartaz__titulo">{{ _e.titulo }}</span>
+  </div>
+  {%- endif -%}
+</div>

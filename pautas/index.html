@@ -1,0 +1,70 @@
+---
+layout: default
+title: Pautas
+description: Como pedir uma data no Teatro Municipal de Guarapuava. Credenciamento anual, datas livres e pedidos ao longo do ano.
+secao: pautas
+---
+{%- assign _p = site.data.pautas -%}
+{%- assign _g = site.data.geral -%}
+<header class="pagina-cabeca envelope">
+  <h1 class="pagina-cabeca__titulo">Pautas</h1>
+  <p class="pagina-cabeca__intro">O palco do Teatro Municipal está aberto a grupos, artistas e produtores. As datas da temporada são distribuídas por credenciamento, e as que sobram podem ser pedidas ao longo do ano.</p>
+</header>
+
+<section class="secao plateia" aria-label="Situação do credenciamento">
+  <div class="envelope">
+    {% include pautas-status.html %}
+    {% include fluxo.html %}
+  </div>
+</section>
+
+<section class="secao plateia" id="datas-livres" style="padding-top:0" aria-labelledby="titulo-datas">
+  <div class="envelope duas-colunas">
+    <div>
+      <h2 class="subtitulo" id="titulo-datas">Datas livres</h2>
+      <div class="calendario" data-calendario hidden>
+        <div class="calendario__cabeca">
+          <p class="calendario__mes" data-cal-mes aria-live="polite"></p>
+          <div class="calendario__navegar">
+            <button type="button" data-cal-anterior aria-label="Mês anterior">‹</button>
+            <button type="button" data-cal-seguinte aria-label="Próximo mês">›</button>
+          </div>
+        </div>
+        <div class="calendario__grade" data-cal-grade></div>
+        <div class="calendario__legenda"><span><i aria-hidden="true"></i> Data livre</span></div>
+        <p class="calendario__detalhe" data-cal-detalhe aria-live="polite"></p>
+      </div>
+    </div>
+    <div>
+      <h3 class="pautas-datas__titulo">Todas as datas livres</h3>
+      {% include datas-livres.html %}
+    </div>
+  </div>
+</section>
+
+<section class="secao" id="ao-longo-do-ano" aria-labelledby="titulo-ano">
+  <div class="envelope duas-colunas">
+    <div class="texto-corrido">
+      <h2 class="subtitulo" id="titulo-ano">Pedidos ao longo do ano</h2>
+      <p>Fora do credenciamento, os pedidos são feitos direto com a Secretaria de Cultura, pelo WhatsApp e por ofício.</p>
+      <p>{{ _p.orientacoes_oficio }}</p>
+      <p>A resposta, deferindo ou não o pedido, chega pelo mesmo e-mail do ofício.</p>
+    </div>
+    <div>
+      <dl class="ficha">
+        <dt>WhatsApp</dt>
+        <dd>{% if _g.whatsapp and _g.whatsapp != "" %}<a class="link" href="https://wa.me/55{{ _g.whatsapp | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}" target="_blank" rel="noopener">{{ _g.whatsapp }}</a>{% else %}Secretaria Municipal de Cultura{% endif %}</dd>
+        <dt>E-mail para o ofício</dt>
+        <dd>{% if _g.email_cultura and _g.email_cultura != "" %}<a class="link" href="mailto:{{ _g.email_cultura }}">{{ _g.email_cultura }}</a>{% else %}E-mail da Secretaria de Cultura{% endif %}</dd>
+        {%- if _g.telefone and _g.telefone != "" -%}
+        <dt>Telefone</dt>
+        <dd><a class="link" href="tel:+55{{ _g.telefone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}">{{ _g.telefone }}</a></dd>
+        {%- endif -%}
+        <dt>Credenciamento</dt>
+        <dd>{% if _p.link_formulario and _p.link_formulario != "" %}<a class="link" href="{{ _p.link_formulario }}" target="_blank" rel="noopener">Formulário online</a>{% else %}Formulário online, de {% include data.html d=_p.abertura %} a {% include data.html d=_p.encerramento %}{% endif %}</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+{% include entreato.html i=4 gel="tijolo" %}

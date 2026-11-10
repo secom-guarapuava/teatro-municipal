@@ -1,0 +1,12 @@
+{%- assign _d = include.d | date: "%Y-%m-%d" -%}
+{%- assign _dia = _d | date: "%-d" -%}
+{%- assign _m = _d | date: "%-m" | minus: 1 -%}
+{%- assign _ano = _d | date: "%Y" -%}
+{%- assign _w = _d | date: "%w" | plus: 0 -%}
+{%- case include.formato -%}
+{%- when "semana" -%}{{ site.data.i18n.dias[_w] }}, {{ _dia }} de {{ site.data.i18n.meses[_m] }}
+{%- when "ano" -%}{{ _dia }} de {{ site.data.i18n.meses[_m] }} de {{ _ano }}
+{%- when "mes-ano" -%}{{ site.data.i18n.meses[_m] }} de {{ _ano }}
+{%- when "diasemana" -%}{{ site.data.i18n.dias[_w] }}
+{%- else -%}{{ _dia }} de {{ site.data.i18n.meses[_m] }}
+{%- endcase -%}

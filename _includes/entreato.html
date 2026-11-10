@@ -1,0 +1,13 @@
+{%- assign _frases = site.data.frases -%}
+{%- assign _n = _frases.size -%}
+{%- if _n > 0 -%}
+{%- assign _i = include.i | default: 0 | modulo: _n -%}
+{%- assign _f = _frases[_i] -%}
+{%- assign _gel = include.gel | default: "tijolo" -%}
+<figure class="entreato entreato--{{ _gel }}{% if _f.texto.size > 110 %} entreato--longa{% endif %}" data-entreato>
+  <div class="entreato__conteudo">
+    <blockquote class="entreato__frase"><p data-frase-texto>{{ _f.texto }}</p></blockquote>
+    <figcaption class="entreato__autor"><span data-frase-autor>{{ _f.autor }}</span><cite data-frase-obra>{% if _f.obra and _f.obra != "" %}{{ _f.obra }}{% endif %}</cite></figcaption>
+  </div>
+</figure>
+{%- endif -%}

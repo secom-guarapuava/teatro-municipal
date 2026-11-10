@@ -1,0 +1,22 @@
+{%- comment -%}
+  Ordena os espetáculos pela data da primeira sessão (funciona com datas em texto ou em formato de data).
+  Resultado: as variáveis `em_cartaz` (sessões de hoje em diante) e `ja_passaram` (mais recentes primeiro),
+  cada uma uma lista de chaves "AAAA-MM-DD|fim|caminho".
+{%- endcomment -%}
+{%- assign _hoje = site.time | date: "%Y-%m-%d" -%}
+{%- capture _chaves -%}
+{%- for e in site.espetaculos -%}
+{%- assign _ini = e.data | date: "%Y-%m-%d" -%}
+{%- assign _fim = _ini -%}
+{%- for s in e.sessoes_extras -%}{%- assign _sd = s.data | date: "%Y-%m-%d" -%}{%- if _sd > _fim -%}{%- assign _fim = _sd -%}{%- endif -%}{%- endfor -%}
+{{ _ini }}{{ e.horario | default: "00:00" }}|{{ _fim }}|{{ e.path }}{% unless forloop.last %}~~{% endunless %}
+{%- endfor -%}
+{%- endcapture -%}
+{%- assign _todas = _chaves | split: "~~" | sort -%}
+{%- assign em_cartaz = "" | split: "" -%}
+{%- assign ja_passaram = "" | split: "" -%}
+{%- for k in _todas -%}
+{%- assign _p = k | split: "|" -%}
+{%- if _p[1] >= _hoje -%}{%- assign em_cartaz = em_cartaz | push: k -%}{%- else -%}{%- assign ja_passaram = ja_passaram | push: k -%}{%- endif -%}
+{%- endfor -%}
+{%- assign ja_passaram = ja_passaram | reverse -%}

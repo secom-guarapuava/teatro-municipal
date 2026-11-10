@@ -1,0 +1,32 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{%- capture _titulo -%}{%- if page.titulo -%}{{ page.titulo }} | {{ site.title }}{%- elsif page.title -%}{{ page.title }} | {{ site.title }}{%- else -%}{{ site.title }}{%- endif -%}{%- endcapture -%}
+{%- assign _descricao = page.resumo | default: page.description | default: site.description | strip_html | strip -%}
+{%- assign _imagem = page.imagem | default: page.og_imagem | default: "/assets/img/teatro-noite-1000.jpg" -%}
+<title>{{ _titulo }}</title>
+<meta name="description" content="{{ _descricao | escape }}">
+<link rel="canonical" href="{{ page.url | absolute_url }}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:title" content="{{ page.titulo | default: page.title | default: site.title | escape }}">
+<meta property="og:description" content="{{ _descricao | escape }}">
+<meta property="og:url" content="{{ page.url | absolute_url }}">
+<meta property="og:image" content="{% if _imagem contains '://' %}{{ _imagem }}{% else %}{{ _imagem | absolute_url }}{% endif %}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="{{ '/assets/img/favicon.svg' | relative_url }}" type="image/svg+xml">
+<link rel="preload" href="{{ '/assets/fonts/bodoni-moda.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ '/assets/fonts/hanken-grotesk.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+<script>
+  // Decide antes da pintura se os três sinais tocam (só na primeira visita da sessão, na página inicial).
+  (function () {
+    var d = document.documentElement;
+    d.classList.add('js');
+    try {
+      var calmo = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if ({{ page.tres_sinais | default: false }} && !calmo && !sessionStorage.getItem('tm-sinais')) d.classList.add('com-sinais');
+    } catch (e) {}
+  })();
+</script>

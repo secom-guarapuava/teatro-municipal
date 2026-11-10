@@ -1,0 +1,36 @@
+---
+layout: default
+title: Acervo
+description: Álbuns de fotos dos espetáculos e eventos do Teatro Municipal de Guarapuava.
+secao: acervo
+---
+{%- include ordenar-acervo.html -%}
+<header class="pagina-cabeca envelope">
+  <h1 class="pagina-cabeca__titulo">Acervo</h1>
+  <p class="pagina-cabeca__intro">A memória do palco. Fotos dos espetáculos e eventos que passaram pelo Teatro Municipal, organizadas por ano. Cada álbum abre no site onde está guardado.</p>
+</header>
+
+<section class="secao" style="padding-top:0" aria-label="Álbuns por ano">
+  <div class="envelope">
+    {%- if albuns_ordenados.size == 0 -%}
+    <p class="vazio">O acervo ainda está vazio. Os primeiros álbuns aparecem aqui assim que forem publicados.</p>
+    {%- endif -%}
+    {%- assign _ano_atual = "" -%}
+    {%- for k in albuns_ordenados -%}
+    {%- assign _p = k | split: "|" -%}
+    {%- assign a = site.acervo | where: "path", _p[1] | first -%}
+    {%- assign _ano = _p[0] | slice: 0, 4 -%}
+    {%- if _ano != _ano_atual -%}
+    {%- unless forloop.first -%}</ul></div>{%- endunless -%}
+    <div class="acervo-ano">
+      <h2 class="acervo-ano__titulo">{{ _ano }}</h2>
+      <ul class="albuns albuns--arquivo">
+    {%- assign _ano_atual = _ano -%}
+    {%- endif -%}
+    {% include album.html a=a destaque=a.destaque %}
+    {%- if forloop.last -%}</ul></div>{%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% include entreato.html i=5 gel="ambar" %}

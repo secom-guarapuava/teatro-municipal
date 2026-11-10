@@ -1,0 +1,135 @@
+---
+layout: default
+tres_sinais: true
+classe_corpo: inicio
+---
+{%- include ordenar-espetaculos.html -%}
+{%- include ordenar-acervo.html -%}
+
+<section class="palco" data-palco aria-labelledby="titulo-palco">
+  <div class="palco__cena">
+    <img class="palco__foto palco__foto--escura"
+      src="{{ '/assets/img/teatro-noite-2000.jpg' | relative_url }}"
+      srcset="{{ '/assets/img/teatro-noite-1000.jpg' | relative_url }} 1000w, {{ '/assets/img/teatro-noite-2000.jpg' | relative_url }} 2000w"
+      sizes="100vw" width="2000" height="1124" fetchpriority="high"
+      alt="O Teatro Municipal Marina Karam Primak ao anoitecer, com as janelas em arco acesas e o foyer de vidro iluminado.">
+    <img class="palco__foto palco__foto--luz" aria-hidden="true"
+      src="{{ '/assets/img/teatro-noite-2000.jpg' | relative_url }}"
+      srcset="{{ '/assets/img/teatro-noite-1000.jpg' | relative_url }} 1000w, {{ '/assets/img/teatro-noite-2000.jpg' | relative_url }} 2000w"
+      sizes="100vw" width="2000" height="1124" alt="">
+    <canvas class="palco__poeira" data-poeira aria-hidden="true"></canvas>
+  </div>
+
+  <div class="palco__texto">
+    <h1 class="palco__titulo" id="titulo-palco">
+      <span>Teatro</span>
+      <span>Municipal</span>
+      <span class="palco__titulo-cidade">de Guarapuava</span>
+      {%- if site.data.geral.nome_teatro and site.data.geral.nome_teatro != "" -%}<span class="palco__titulo-nome">{{ site.data.geral.nome_teatro }}</span>{%- endif -%}
+    </h1>
+    <p class="palco__sub">Palco da cidade desde 2018. Teatro, dança, música e tudo o que cabe numa noite de luz acesa.</p>
+  </div>
+
+  {%- for k in em_cartaz limit: 4 -%}
+  {%- assign _k = k | split: "|" -%}
+  {%- assign e = site.espetaculos | where: "path", _k[2] | first -%}
+  <a class="palco__proximo" href="{{ e.url | relative_url }}" data-proximo data-fim="{{ _k[1] }}"{% unless forloop.first %} hidden{% endunless %}>
+    <span class="palco__proximo-rotulo">Próximo espetáculo</span>
+    <span class="palco__proximo-titulo">{{ e.titulo }}</span>
+    <span class="palco__proximo-data">{% include data.html d=e.data formato="semana" %}, às {% include hora.html h=e.horario %}</span>
+  </a>
+  {%- endfor -%}
+</section>
+
+<section class="secao secao--luz" id="em-cartaz" aria-labelledby="titulo-cartaz">
+  <div class="envelope">
+    <div class="secao__cabeca">
+      <h2 class="secao__titulo" id="titulo-cartaz">Em cartaz</h2>
+      <p class="secao__intro">Os próximos espetáculos no palco do teatro. Muitos são gratuitos, com ingresso retirado pela internet.</p>
+    </div>
+
+    <ol class="sessoes" data-sessoes>
+      {%- for k in em_cartaz limit: 5 -%}
+      {%- assign _k = k | split: "|" -%}
+      {%- assign e = site.espetaculos | where: "path", _k[2] | first -%}
+      {% assign _kf = _k[1] %}{% include sessao.html e=e fim=_kf %}
+      {%- endfor -%}
+    </ol>
+    <p class="vazio" data-sessoes-vazio{% if em_cartaz.size > 0 %} hidden{% endif %}>
+      Nenhum espetáculo marcado por enquanto. A próxima temporada está sendo montada.<br>
+      <a class="link" href="{{ '/pautas/' | relative_url }}">Veja as datas livres e proponha o seu</a>
+    </p>
+
+    <div class="secao__rodape">
+      <a class="link link--grande" href="{{ '/programacao/' | relative_url }}">Ver a programação completa</a>
+    </div>
+  </div>
+</section>
+
+{% include entreato.html i=0 gel="tijolo" %}
+
+<section class="secao plateia" id="pautas" aria-labelledby="titulo-pautas">
+  <div class="envelope">
+    <div class="secao__cabeca">
+      <h2 class="secao__titulo" id="titulo-pautas">Pautas</h2>
+      <p class="secao__intro">Quer subir ao palco? O teatro recebe grupos, artistas e produtores. As datas são distribuídas por credenciamento, uma vez por ano.</p>
+    </div>
+
+    {% include pautas-status.html %}
+    {% include fluxo.html %}
+
+    <div class="pautas-datas">
+      <h3 class="pautas-datas__titulo">Próximas datas livres</h3>
+      {% include datas-livres.html limite=6 %}
+      <div class="secao__rodape">
+        <a class="link link--grande" href="{{ '/pautas/' | relative_url }}">Ver o calendário e como pedir uma data</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include entreato.html i=1 gel="ambar" %}
+
+<section class="secao secao--luz" id="acervo" aria-labelledby="titulo-acervo">
+  <div class="envelope">
+    <div class="secao__cabeca">
+      <h2 class="secao__titulo" id="titulo-acervo">Acervo</h2>
+      <p class="secao__intro">Fotos dos espetáculos que passaram por aqui. Cada álbum abre no lugar onde está guardado.</p>
+    </div>
+
+    {%- assign _destaques = "" | split: "" -%}
+    {%- assign _demais = "" | split: "" -%}
+    {%- for k in albuns_ordenados -%}
+    {%- assign _p = k | split: "|" | last -%}
+    {%- assign a = site.acervo | where: "path", _p | first -%}
+    {%- if a.destaque -%}{%- assign _destaques = _destaques | push: _p -%}{%- else -%}{%- assign _demais = _demais | push: _p -%}{%- endif -%}
+    {%- endfor -%}
+    {%- assign _home = _destaques | concat: _demais -%}
+    <ul class="albuns albuns--vitrine">
+      {%- for _p in _home limit: 3 -%}
+      {%- assign a = site.acervo | where: "path", _p | first -%}
+      {% include album.html a=a destaque=forloop.first %}
+      {%- endfor -%}
+    </ul>
+    <div class="secao__rodape">
+      <a class="link link--grande" href="{{ '/acervo/' | relative_url }}">Ver todo o acervo</a>
+    </div>
+  </div>
+</section>
+
+<section class="secao plateia" id="o-teatro" aria-labelledby="titulo-teatro">
+  <div class="envelope teatro-chamada">
+    <figure class="arco">
+      <img src="{{ '/assets/img/teatro-fachada-1000.jpg' | relative_url }}" width="1000" height="666" loading="lazy"
+        alt="Fachada do teatro com tijolos aparentes e janelas em arco, ao lado do foyer de vidro e do totem com as máscaras do teatro.">
+    </figure>
+    <div class="teatro-chamada__texto">
+      <h2 class="secao__titulo" id="titulo-teatro">Um palco com memória</h2>
+      <p>A fachada de tijolos e janelas em arco retoma o desenho do primeiro prédio que abrigou a Prefeitura de Guarapuava. Atrás dela, um foyer de vidro e uma plateia de 316 lugares, com iluminação, cenotecnia e acústica pensadas para teatro, dança e música.</p>
+      <p>Além das apresentações, o teatro tem vocação de escola: recebe cursos e oficinas para formar artistas e plateia.</p>
+      <a class="link link--grande" href="{{ '/o-teatro/' | relative_url }}">Conheça a história do teatro</a>
+    </div>
+  </div>
+</section>
+
+{% include entreato.html i=2 gel="carmim" %}

@@ -1,0 +1,23 @@
+{%- assign _p = site.data.pautas -%}
+<ol class="fluxo" data-fluxo aria-label="Etapas do credenciamento">
+  <li class="fluxo__passo" data-passo="1">
+    <span class="fluxo__num" aria-hidden="true">1</span>
+    <h3 class="fluxo__titulo">Inscrição</h3>
+    <p>De {% include data.html d=_p.abertura %} a {% include data.html d=_p.encerramento %}, pelo formulário online. Você se credencia e escolhe a data que quer.</p>
+  </li>
+  <li class="fluxo__passo" data-passo="2">
+    <span class="fluxo__num" aria-hidden="true">2</span>
+    <h3 class="fluxo__titulo">Deferimento</h3>
+    <p>Em {{ _p.resultado_texto }}, a Secretaria de Cultura analisa os pedidos e divulga as datas deferidas.</p>
+  </li>
+  <li class="fluxo__passo" data-passo="3">
+    <span class="fluxo__num" aria-hidden="true">3</span>
+    <h3 class="fluxo__titulo">Readequação</h3>
+    <p>Quem não conseguiu a data pedida escolhe uma nova entre as que ficaram disponíveis.</p>
+  </li>
+  <li class="fluxo__passo" data-passo="4">
+    <span class="fluxo__num" aria-hidden="true">4</span>
+    <h3 class="fluxo__titulo">Ao longo do ano</h3>
+    <p>As datas que sobram podem ser pedidas pelo WhatsApp, com um ofício enviado ao e-mail da Cultura.</p>
+  </li>
+</ol>
