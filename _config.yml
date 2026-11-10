@@ -10,7 +10,7 @@ timezone: America/Sao_Paulo
 # Endereço público do site. Na publicação pelo GitHub Actions estes dois valores
 # são preenchidos automaticamente; só altere se for usar um domínio próprio.
 url: "https://secom-guarapuava.github.io"
-baseurl: ""
+baseurl: "/teatro-municipal"
 
 markdown: kramdown
 kramdown:
