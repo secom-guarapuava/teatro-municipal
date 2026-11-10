@@ -1,0 +1,63 @@
+# Publica o site no GitHub Pages.
+# Roda sozinho a cada alteração feita pelo painel, e também todo dia de madrugada
+# para tirar da programação os espetáculos que já aconteceram.
+name: Publicar o site
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 6 * * *"   # 3h17 em Guarapuava
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  montar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Otimizar as fotos enviadas pelo painel
+        run: |
+          pip install --quiet pillow
+          python scripts/otimizar_imagens.py assets/uploads
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Montar o site
+        env:
+          JEKYLL_ENV: production
+          TZ: America/Sao_Paulo
+        run: |
+          echo "url: \"${{ steps.pages.outputs.origin }}\"" > _config.publicacao.yml
+          bundle exec jekyll build --config _config.yml,_config.publicacao.yml --baseurl "${{ steps.pages.outputs.base_path }}"
+
+      - uses: actions/upload-pages-artifact@v3
+
+  publicar:
+    needs: montar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.publicacao.outputs.page_url }}
+    steps:
+      - id: publicacao
+        uses: actions/deploy-pages@v4
