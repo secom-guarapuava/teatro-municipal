@@ -75,15 +75,31 @@ content:
         description: "Exemplo: 1h20 ou 55 minutos"
         type: string
       - name: imagem
-        label: Foto ou cartaz
-        description: Na vertical fica melhor. Sem imagem, o site cria um cartaz com o nome do espetáculo.
+        label: Foto do espetáculo
+        description: Entra no arco do cartaz padrão, em preto e branco. Sem foto, o cartaz usa uma foto do teatro.
         type: image
-      - name: cor_luz
-        label: Cor da luz do cartaz
-        description: Usada quando não há foto.
+      - name: foto_posicao
+        label: Enquadramento da foto no cartaz
+        description: Use "Acima" quando o rosto ou o principal da foto estiver no alto.
         type: select
+        default: Centro
         options:
-          values: [Âmbar, Tijolo, Branco]
+          values: [Centro, Acima, Abaixo]
+      - name: foto_cor
+        label: Foto colorida no cartaz
+        description: Deixe desmarcado para manter o padrão em preto e branco.
+        type: boolean
+        default: false
+      - name: cor_luz
+        label: Cor de destaque do cartaz
+        type: select
+        default: Tijolo
+        options:
+          values: [Tijolo, Âmbar, Vinho]
+      - name: cartaz_faixa
+        label: Texto da faixa do cartaz (opcional)
+        description: "Se ficar vazio, o cartaz usa o tipo de entrada. Exemplo: ENTRADA GRATUITA • RETIRE SEU INGRESSO"
+        type: string
       - name: resumo
         label: Resumo em uma frase
         description: Aparece na lista de espetáculos e quando o link é compartilhado no WhatsApp.
@@ -352,9 +368,17 @@ content:
       - name: mapa_link
         label: Link do mapa
         type: string
-      - name: logo_prefeitura
-        label: Logo da Prefeitura
-        description: Use o arquivo oficial, sem alterar cores.
+      - name: logo_apoio
+        label: Logo de apoio (cartazes e rodapé)
+        description: Logo oficial da Secretaria de Cultura, usado como é. Aparece nos cartazes com o texto de apoio.
+        type: image
+      - name: texto_apoio
+        label: Texto antes do logo de apoio
+        type: string
+        default: "apoio:"
+      - name: logo_prefeitura_branca
+        label: Logo da Prefeitura, versão branca oficial (opcional)
+        description: Se for enviada, aparece no rodapé no lugar do logo de apoio.
         type: image
       - name: credito_fotos
         label: Autoria das fotos do teatro
