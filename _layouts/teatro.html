@@ -2,12 +2,15 @@
 layout: default
 secao: o-teatro
 ---
-<header class="pagina-cabeca envelope">
-  <h1 class="pagina-cabeca__titulo">{{ page.title }}</h1>
-  {%- if page.subtitulo -%}<p class="pagina-cabeca__intro">{{ page.subtitulo }}</p>{%- endif -%}
+<header class="pagina-cabeca">
+  {% include fundo.html src="/assets/img/teatro-noite-2000.jpg" posicao="50% 45%" %}
+  <div class="envelope">
+    <h1 class="pagina-cabeca__titulo">{{ page.title }}</h1>
+    {%- if page.subtitulo -%}<p class="pagina-cabeca__intro">{{ page.subtitulo }}</p>{%- endif -%}
+  </div>
 </header>
 
-<section class="secao plateia">
+<section class="secao claro moldura">
   <div class="envelope duas-colunas">
     <div class="texto-corrido">
       {%- capture _src -%}src="{{ site.baseurl }}/assets/uploads{%- endcapture -%}
@@ -22,7 +25,7 @@ secao: o-teatro
 </section>
 
 {%- if page.galeria and page.galeria.size > 0 -%}
-<section class="secao" aria-label="Fotos do prédio">
+<section class="secao moldura" aria-label="Fotos do prédio">
   <div class="envelope">
     <ul class="albuns">
       {%- for f in page.galeria -%}
@@ -36,15 +39,15 @@ secao: o-teatro
 </section>
 {%- endif -%}
 
-{% include entreato.html i=6 gel="tijolo" %}
+{% include entreato.html i=6 gel="tijolo" foto="bailarina-sentada" posicao="50% 40%" %}
 
 {%- if page.ficha and page.ficha.size > 0 -%}
-<section class="secao secao--luz" aria-labelledby="titulo-ficha">
+<section class="secao claro moldura" aria-labelledby="titulo-ficha">
   <div class="envelope duas-colunas">
     <div>
       <h2 class="subtitulo" id="titulo-ficha">Ficha técnica do espaço</h2>
-      <p class="texto-corrido">O que o teatro oferece para quem vai se apresentar e para quem vem assistir.</p>
-      <a class="link link--grande" href="{{ '/pautas/' | relative_url }}">Como pedir uma data</a>
+      <p class="bloco__chamada">O que o teatro oferece para quem vai se apresentar e para quem vem assistir.</p>
+      <a class="link link--grande" href="{{ '/datas-livres/' | relative_url }}">Ver as datas livres</a>
     </div>
     <dl class="ficha">
       {%- for item in page.ficha -%}

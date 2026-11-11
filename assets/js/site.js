@@ -105,112 +105,81 @@
     document.addEventListener('keydown', sair);
   });
 
-  /* ---------- Palco: refletor que segue o olhar e poeira na luz ---------- */
+  /* ---------- Abertura: poeira dourada no raio de sol da foto ---------- */
   var palco = document.querySelector('[data-palco]');
-  if (palco) {
-    var canvas = palco.querySelector('[data-poeira]');
-    var ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
-    var largura = 0, altura = 0, dpr = 1;
-    var alvo = { x: 0.58, y: 0.46 }, pos = { x: 0.58, y: 0.46 };
-    var raio = 0, raioAlvo = 0;
-    var mouseDentro = false;
-    var visivel = true;
-    var particulas = [];
-    var inicio = performance.now();
-
-    var medir = function () {
-      var r = palco.getBoundingClientRect();
-      largura = r.width; altura = r.height;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      if (canvas) {
-        canvas.width = Math.round(largura * dpr);
-        canvas.height = Math.round(altura * dpr);
-      }
-      var base = Math.max(largura, altura);
-      raioAlvoBase = base * (largura < 760 ? 0.5 : 0.31);
-      var n = Math.min(120, Math.round((largura * altura) / 16000));
-      particulas = [];
-      for (var i = 0; i < n; i++) particulas.push(novaParticula(true));
-    };
-    var raioAlvoBase = 0;
-
-    function novaParticula(qualquerLugar) {
+  var canvasPoeira = palco && palco.querySelector('[data-poeira]');
+  if (canvasPoeira && !calmo && canvasPoeira.getContext) {
+    var ctxP = canvasPoeira.getContext('2d');
+    var largP = 0, altP = 0, dprP = 1, graos = [], visivelP = true;
+    var SOL = { x: 0.9, y: 0.12 };
+    var novoGrao = function (qualquer) {
       return {
-        x: Math.random() * largura,
-        y: qualquerLugar ? Math.random() * altura : altura + 10,
-        r: 0.4 + Math.random() * 1.5,
-        vx: (Math.random() - 0.5) * 0.12,
-        vy: -(0.03 + Math.random() * 0.16),
-        f: Math.random() * Math.PI * 2
+        x: Math.random() * largP, y: qualquer ? Math.random() * altP : altP + 8,
+        r: 0.5 + Math.random() * 1.6, vx: -(0.05 + Math.random() * 0.22), vy: -(0.02 + Math.random() * 0.12), f: Math.random() * 6.28
       };
-    }
-
-    if (calmo) {
-      palco.style.setProperty('--r', '34vmax');
-    } else {
-      medir();
-      window.addEventListener('resize', medir);
-      palco.addEventListener('pointermove', function (ev) {
-        if (ev.pointerType !== 'mouse') return;
-        var r = palco.getBoundingClientRect();
-        alvo.x = (ev.clientX - r.left) / r.width;
-        alvo.y = (ev.clientY - r.top) / r.height;
-        mouseDentro = true;
-      });
-      palco.addEventListener('pointerleave', function () { mouseDentro = false; });
-
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function (entradas) {
-          visivel = entradas[0].isIntersecting;
-          if (visivel) requestAnimationFrame(quadro);
-        }).observe(palco);
+    };
+    var medirP = function () {
+      var r = palco.getBoundingClientRect();
+      largP = r.width; altP = r.height; dprP = Math.min(window.devicePixelRatio || 1, 2);
+      canvasPoeira.width = Math.round(largP * dprP); canvasPoeira.height = Math.round(altP * dprP);
+      graos = [];
+      var n = Math.min(140, Math.round(largP * altP / 12000));
+      for (var i = 0; i < n; i++) graos.push(novoGrao(true));
+    };
+    var quadroP = function () {
+      if (!visivelP || document.hidden) return;
+      ctxP.setTransform(dprP, 0, 0, dprP, 0, 0);
+      ctxP.clearRect(0, 0, largP, altP);
+      var sx = SOL.x * largP, sy = SOL.y * altP, alcance = Math.max(largP, altP) * 0.75;
+      for (var i = 0; i < graos.length; i++) {
+        var g = graos[i];
+        g.x += g.vx; g.y += g.vy; g.f += 0.015;
+        if (g.y < -10 || g.x < -10) graos[i] = g = novoGrao(false);
+        var d = Math.hypot(g.x - sx, g.y - sy) / alcance;
+        if (d >= 1) continue;
+        var a = Math.pow(1 - d, 1.6) * (0.45 + 0.35 * Math.sin(g.f));
+        ctxP.fillStyle = 'rgba(255, 240, 210,' + a.toFixed(3) + ')';
+        ctxP.beginPath(); ctxP.arc(g.x, g.y, g.r, 0, 6.2832); ctxP.fill();
       }
-
-      sinaisFim.then(function () {
-        setTimeout(function () { raioAlvo = 1; }, 150);
-      });
-
-      var quadro = function (t) {
-        if (!visivel || document.hidden) return;
-        if (!mouseDentro) {
-          var s = (t - inicio) / 1000;
-          alvo.x = 0.56 + 0.17 * Math.sin(s * 0.21);
-          alvo.y = 0.47 + 0.09 * Math.sin(s * 0.33 + 1);
-        }
-        pos.x += (alvo.x - pos.x) * 0.045;
-        pos.y += (alvo.y - pos.y) * 0.045;
-        raio += (raioAlvo * raioAlvoBase - raio) * 0.035;
-        palco.style.setProperty('--x', (pos.x * 100).toFixed(2) + '%');
-        palco.style.setProperty('--y', (pos.y * 100).toFixed(2) + '%');
-        palco.style.setProperty('--r', raio.toFixed(1) + 'px');
-        desenharPoeira();
-        requestAnimationFrame(quadro);
-      };
-
-      var desenharPoeira = function () {
-        if (!ctx) return;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.clearRect(0, 0, largura, altura);
-        var cx = pos.x * largura, cy = pos.y * altura;
-        var alcance = Math.max(raio * 0.95, 1);
-        for (var i = 0; i < particulas.length; i++) {
-          var p = particulas[i];
-          p.x += p.vx; p.y += p.vy; p.f += 0.012;
-          if (p.y < -10 || p.x < -10 || p.x > largura + 10) particulas[i] = p = novaParticula(false);
-          var dx = p.x - cx, dy = p.y - cy;
-          var dentro = 1 - Math.sqrt(dx * dx + dy * dy) / alcance;
-          if (dentro <= 0) continue;
-          var a = Math.pow(dentro, 1.4) * (0.35 + 0.3 * Math.sin(p.f));
-          ctx.fillStyle = 'rgba(255, 236, 205,' + a.toFixed(3) + ')';
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      };
-
-      document.addEventListener('visibilitychange', function () { if (!document.hidden) requestAnimationFrame(quadro); });
-      requestAnimationFrame(quadro);
+      requestAnimationFrame(quadroP);
+    };
+    medirP();
+    window.addEventListener('resize', medirP);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { visivelP = en[0].isIntersecting; if (visivelP) requestAnimationFrame(quadroP); }).observe(palco);
     }
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) requestAnimationFrame(quadroP); });
+    sinaisFim.then(function () { requestAnimationFrame(quadroP); });
+  }
+
+  /* ---------- Cartazes desenhados (cartaz.js) ---------- */
+  var geral = {};
+  try { geral = JSON.parse((document.querySelector('[data-geral]') || {}).textContent || '{}'); } catch (e) {}
+  var telas = Array.prototype.slice.call(document.querySelectorAll('canvas[data-cartaz]'));
+  if (telas.length && window.Cartaz) {
+    var desenharTela = function (c) {
+      var larg = c.clientWidth;
+      if (!larg) return;
+      var alvo = Math.round(larg * Math.min(window.devicePixelRatio || 1, 2));
+      if (c._largura && Math.abs(c._largura - alvo) < alvo * 0.1) return;
+      c._largura = alvo;
+      var raw;
+      try { raw = JSON.parse(c.dataset.cartaz); } catch (e) { return; }
+      window.Cartaz.desenhar(c, window.Cartaz.dadosDoEspetaculo(raw, geral), 'post', { largura: alvo }).then(function () {
+        c.style.width = ''; c.style.height = '';
+      });
+    };
+    if ('IntersectionObserver' in window) {
+      var obsTelas = new IntersectionObserver(function (en) {
+        en.forEach(function (x) { if (x.isIntersecting) desenharTela(x.target); });
+      }, { rootMargin: '400px 400px' });
+      telas.forEach(function (c) { obsTelas.observe(c); });
+    } else telas.forEach(desenharTela);
+    var tempoTelas;
+    window.addEventListener('resize', function () {
+      clearTimeout(tempoTelas);
+      tempoTelas = setTimeout(function () { telas.forEach(function (c) { if (c._largura) desenharTela(c); }); }, 250);
+    });
   }
 
   /* ---------- Próximo espetáculo no palco e listas em cartaz ---------- */
@@ -224,19 +193,19 @@
     });
   }
 
-  document.querySelectorAll('.sessao[data-fim]').forEach(function (li) {
+  document.querySelectorAll('.programa__item[data-fim], .vitrine__item[data-fim]').forEach(function (li) {
     if (li.dataset.fim < HOJE) li.classList.add('is-encerrada');
   });
 
   function conferirVazio(lista) {
-    var vazio = lista.parentNode.querySelector('[data-sessoes-vazio]');
+    var vazio = lista.closest('.envelope') && lista.closest('.envelope').querySelector('[data-sessoes-vazio]');
     if (!vazio) return;
-    var algum = Array.prototype.some.call(lista.querySelectorAll('.sessao'), function (li) {
+    var algum = Array.prototype.some.call(lista.querySelectorAll('.programa__item, .vitrine__item'), function (li) {
       return !li.classList.contains('is-encerrada') && !li.classList.contains('is-filtrada');
     });
     vazio.hidden = algum;
   }
-  document.querySelectorAll('[data-sessoes]').forEach(conferirVazio);
+  document.querySelectorAll('[data-sessoes], [data-vitrine-trilho]').forEach(conferirVazio);
 
   /* Filtros por linguagem na programação */
   var filtros = document.querySelector('[data-filtros]');
@@ -248,7 +217,7 @@
       if (!b) return;
       filtros.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
       var g = b.dataset.filtro;
-      lista.querySelectorAll('.sessao').forEach(function (li) {
+      lista.querySelectorAll('.programa__item').forEach(function (li) {
         li.classList.toggle('is-filtrada', g !== '' && li.dataset.genero !== g);
       });
       conferirVazio(lista);
@@ -275,6 +244,46 @@
       };
       if (navigator.clipboard) navigator.clipboard.writeText(url).then(ok, function () {});
     });
+  });
+
+  /* ---------- Vitrine de cartazes: corre sozinha, para quando a pessoa interage ---------- */
+  document.querySelectorAll('[data-vitrine]').forEach(function (vit) {
+    var trilho = vit.querySelector('[data-vitrine-trilho]');
+    var secao = vit.closest('section');
+    var controles = secao && secao.querySelector('[data-vitrine-controles]');
+    if (!trilho) return;
+    var anterior = controles && controles.querySelector('[data-vitrine-anterior]');
+    var seguinte = controles && controles.querySelector('[data-vitrine-seguinte]');
+    var passo = function () {
+      var item = trilho.querySelector('.vitrine__item:not(.is-encerrada)');
+      return item ? item.getBoundingClientRect().width + parseFloat(getComputedStyle(trilho).columnGap || 24) : 300;
+    };
+    var noFim = function () { return trilho.scrollLeft + trilho.clientWidth >= trilho.scrollWidth - 4; };
+    var atualizar = function () {
+      var sobra = trilho.scrollWidth > trilho.clientWidth + 4;
+      if (controles) controles.hidden = !sobra;
+      if (anterior) anterior.disabled = trilho.scrollLeft <= 2;
+      if (seguinte) seguinte.disabled = noFim();
+    };
+    var mover = function (dir) { trilho.scrollBy({ left: dir * passo(), behavior: calmo ? 'auto' : 'smooth' }); };
+    if (anterior) anterior.addEventListener('click', function () { pausar(); mover(-1); });
+    if (seguinte) seguinte.addEventListener('click', function () { pausar(); mover(1); });
+    trilho.addEventListener('scroll', function () { requestAnimationFrame(atualizar); }, { passive: true });
+    window.addEventListener('resize', atualizar);
+    atualizar();
+
+    // passa sozinha a cada 4,5 s; para com mouse em cima, foco, toque ou fora da tela
+    if (calmo) return;
+    var parado = false, visivel = false, retomar;
+    function pausar() { parado = true; clearTimeout(retomar); retomar = setTimeout(function () { parado = false; }, 9000); }
+    ['pointerdown', 'wheel', 'touchstart', 'focusin'].forEach(function (ev) { trilho.addEventListener(ev, pausar, { passive: true }); });
+    trilho.addEventListener('mouseenter', function () { parado = true; clearTimeout(retomar); });
+    trilho.addEventListener('mouseleave', function () { parado = false; });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visivel = en[0].isIntersecting; }, { threshold: 0.4 }).observe(trilho);
+    setInterval(function () {
+      if (parado || !visivel || document.hidden || trilho.scrollWidth <= trilho.clientWidth + 4) return;
+      if (noFim()) trilho.scrollTo({ left: 0, behavior: 'smooth' }); else mover(1);
+    }, 4500);
   });
 
   /* ---------- Entreatos: a frase acende quando o refletor chega ---------- */

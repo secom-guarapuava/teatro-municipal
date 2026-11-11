@@ -10,7 +10,10 @@
 {{ content }}
 </main>
 {% include rodape.html %}
+{%- assign _g = site.data.geral -%}
+<script type="application/json" data-geral>{"nome_teatro":{{ _g.nome_teatro | default: "" | jsonify }},"endereco":{{ _g.endereco | default: "" | jsonify }},"logo_apoio":{% if _g.logo_apoio and _g.logo_apoio != "" %}{{ _g.logo_apoio | relative_url | jsonify }}{% else %}""{% endif %},"texto_apoio":{{ _g.texto_apoio | default: "apoio:" | jsonify }},"foto_padrao":{{ '/assets/img/teatro-noite-1000.jpg' | relative_url | jsonify }}}</script>
 <script type="application/json" data-frases>[{%- for f in site.data.frases -%}{"texto":{{ f.texto | jsonify }},"autor":{{ f.autor | default: "" | jsonify }},"obra":{{ f.obra | default: "" | jsonify }}}{% unless forloop.last %},{% endunless %}{%- endfor -%}]</script>
+<script src="{{ '/assets/js/cartaz.js' | relative_url }}" defer></script>
 <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
 </body>
 </html>

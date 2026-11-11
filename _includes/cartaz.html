@@ -1,13 +1,8 @@
-{%- comment -%} Cartaz de um espetáculo: foto enviada pelo painel ou cartaz tipográfico gerado. {%- endcomment -%}
+{%- comment -%} Cartaz padrão de um espetáculo, desenhado no navegador. Sem JavaScript, aparece a foto. {%- endcomment -%}
 {%- assign _e = include.e -%}
-{%- assign _cor = _e.cor_luz | default: "Âmbar" | downcase | replace: "â", "a" -%}
-<div class="cartaz cartaz--{{ _cor }}{% if include.grande %} cartaz--grande{% endif %}">
-  {%- if _e.imagem and _e.imagem != "" -%}
-  <img class="cartaz__foto" src="{{ _e.imagem | relative_url }}" alt="{{ include.alt | default: '' }}" loading="{{ include.loading | default: 'lazy' }}" decoding="async">
-  {%- else -%}
-  <div class="cartaz__tipo" aria-hidden="true">
-    <span class="cartaz__genero">{{ _e.genero }}</span>
-    <span class="cartaz__titulo">{{ _e.titulo }}</span>
-  </div>
-  {%- endif -%}
+{%- capture _json -%}{% include cartaz-json.html e=_e %}{%- endcapture -%}
+{%- assign _foto = '/assets/img/teatro-noite-1000.jpg' -%}{%- if _e.imagem and _e.imagem != "" -%}{%- assign _foto = _e.imagem -%}{%- endif -%}
+<div class="cartaz-quadro{% if include.grande %} cartaz-quadro--grande{% endif %}">
+  <img class="cartaz-quadro__foto" src="{{ _foto | relative_url }}" alt="" loading="lazy" decoding="async">
+  <canvas class="cartaz-quadro__tela" data-cartaz="{{ _json | strip | escape }}" role="img" aria-label="Cartaz de {{ _e.titulo | escape }}"></canvas>
 </div>

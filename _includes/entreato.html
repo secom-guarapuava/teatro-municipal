@@ -5,6 +5,7 @@
 {%- assign _f = _frases[_i] -%}
 {%- assign _gel = include.gel | default: "tijolo" -%}
 <figure class="entreato entreato--{{ _gel }}{% if _f.texto.size > 110 %} entreato--longa{% endif %}" data-entreato>
+  {%- if include.foto -%}{% include fundo.html foto=include.foto posicao=include.posicao classe="fundo-artista--entreato" %}{%- endif -%}
   <div class="entreato__conteudo">
     <blockquote class="entreato__frase"><p data-frase-texto>{{ _f.texto }}</p></blockquote>
     <figcaption class="entreato__autor"><span data-frase-autor>{{ _f.autor }}</span><cite data-frase-obra>{% if _f.obra and _f.obra != "" %}{{ _f.obra }}{% endif %}</cite></figcaption>

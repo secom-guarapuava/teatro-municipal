@@ -1,0 +1,36 @@
+---
+layout: default
+title: Credenciamento
+description: Como funciona o credenciamento anual para usar o palco do Teatro Municipal de Guarapuava.
+secao: credenciamento
+---
+<header class="pagina-cabeca">
+  {% include fundo.html foto="ensaio" posicao="50% 40%" %}
+  <div class="envelope">
+    <h1 class="pagina-cabeca__titulo">Credenciamento</h1>
+    <p class="pagina-cabeca__intro">Toda estreia começa num formulário. Uma vez por ano, o teatro abre as inscrições para a temporada inteira.</p>
+  </div>
+</header>
+
+<section class="secao claro moldura" aria-label="Situação e etapas do credenciamento">
+  <div class="envelope">
+    {% include pautas-status.html %}
+    {% include fluxo.html %}
+  </div>
+</section>
+
+<section class="secao moldura" aria-labelledby="titulo-ano">
+  {% include fundo.html foto="musico-plateia" posicao="50% 45%" classe="fundo-artista--direita" %}
+  <div class="envelope duas-colunas">
+    <div class="texto-corrido">
+      <h2 class="subtitulo" id="titulo-ano">Perdeu o prazo?</h2>
+      <p>Ainda dá tempo de subir ao palco.</p>
+      <p>{{ site.data.pautas.texto_ao_longo_do_ano }}</p>
+    </div>
+    <div>
+      <a class="ingresso" href="{{ '/datas-livres/' | relative_url }}">Ver as datas livres</a>
+    </div>
+  </div>
+</section>
+
+{% include entreato.html i=5 gel="tijolo" foto="bailarina-arabesque" posicao="50% 25%" %}

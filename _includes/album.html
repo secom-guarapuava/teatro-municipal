@@ -6,7 +6,7 @@
     {%- if _a.capa and _a.capa != "" -%}
     <img src="{{ _a.capa | relative_url }}" alt="" loading="lazy" decoding="async">
     {%- else -%}
-    <div class="cartaz cartaz--ambar"><div class="cartaz__tipo" aria-hidden="true"><span class="cartaz__genero">{{ _a.tipo | default: "Fotos" }}</span><span class="cartaz__titulo">{{ _a.titulo }}</span></div></div>
+    <span class="album__sem-capa">{{ _a.titulo }}</span>
     {%- endif -%}
   {%- if _tem_link -%}</a>{%- else -%}</div>{%- endif -%}
   <div class="album__legenda">

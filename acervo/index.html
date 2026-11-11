@@ -5,12 +5,15 @@ description: Álbuns de fotos dos espetáculos e eventos do Teatro Municipal de 
 secao: acervo
 ---
 {%- include ordenar-acervo.html -%}
-<header class="pagina-cabeca envelope">
-  <h1 class="pagina-cabeca__titulo">Acervo</h1>
-  <p class="pagina-cabeca__intro">A memória do palco. Fotos dos espetáculos e eventos que passaram pelo Teatro Municipal, organizadas por ano. Cada álbum abre no site onde está guardado.</p>
+<header class="pagina-cabeca">
+  {% include fundo.html foto="bailarina-cortina" posicao="50% 40%" %}
+  <div class="envelope">
+    <h1 class="pagina-cabeca__titulo">Acervo</h1>
+    <p class="pagina-cabeca__intro">A memória também aplaude. Cada álbum abre no lugar onde as fotos estão guardadas.</p>
+  </div>
 </header>
 
-<section class="secao" style="padding-top:0" aria-label="Álbuns por ano">
+<section class="secao claro moldura" aria-label="Álbuns por ano">
   <div class="envelope">
     {%- if albuns_ordenados.size == 0 -%}
     <p class="vazio">O acervo ainda está vazio. Os primeiros álbuns aparecem aqui assim que forem publicados.</p>
@@ -33,4 +36,4 @@ secao: acervo
   </div>
 </section>
 
-{% include entreato.html i=5 gel="ambar" %}
+{% include entreato.html i=6 gel="carmim" foto="bailarina-sentada" posicao="50% 40%" %}

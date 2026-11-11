@@ -5,12 +5,15 @@ description: Todos os espetáculos em cartaz no Teatro Municipal de Guarapuava, 
 secao: programacao
 ---
 {%- include ordenar-espetaculos.html -%}
-<header class="pagina-cabeca envelope">
-  <h1 class="pagina-cabeca__titulo">Programação</h1>
-  <p class="pagina-cabeca__intro">Tudo o que vai subir ao palco do Teatro Municipal, na ordem das datas. Clique em um espetáculo para ver a sinopse, a ficha técnica e como garantir o ingresso.</p>
+<header class="pagina-cabeca">
+  {% include fundo.html foto="ator-palco" posicao="50% 35%" %}
+  <div class="envelope">
+    <h1 class="pagina-cabeca__titulo">Programação</h1>
+    <p class="pagina-cabeca__intro">Tem drama, tem riso, tem lugar marcado. Escolha a sessão e venha.</p>
+  </div>
 </header>
 
-<section class="secao" style="padding-top:0" aria-label="Espetáculos em cartaz">
+<section class="secao claro moldura" aria-label="Espetáculos em cartaz">
   <div class="envelope">
     {%- capture _generos -%}{%- for k in em_cartaz -%}{%- assign _k = k | split: "|" -%}{%- assign e = site.espetaculos | where: "path", _k[2] | first -%}{{ e.genero }}{% unless forloop.last %}~~{% endunless %}{%- endfor -%}{%- endcapture -%}
     {%- assign _generos = _generos | split: "~~" | uniq | sort -%}
@@ -22,26 +25,31 @@ secao: programacao
     <p class="visualmente-oculto" aria-live="polite" data-filtro-vazio></p>
     {%- endif -%}
 
-    <ol class="sessoes" data-sessoes>
+    <ol class="programa" data-sessoes>
       {%- for k in em_cartaz -%}
       {%- assign _k = k | split: "|" -%}
       {%- assign e = site.espetaculos | where: "path", _k[2] | first -%}
-      {% assign _kf = _k[1] %}{% include sessao.html e=e fim=_kf %}
+      {%- assign _kf = _k[1] -%}
+      {% include programa-item.html e=e fim=_kf %}
       {%- endfor -%}
     </ol>
     <p class="vazio" data-sessoes-vazio{% if em_cartaz.size > 0 %} hidden{% endif %}>
-      Nenhum espetáculo marcado por enquanto. A próxima temporada está sendo montada.<br>
-      <a class="link" href="{{ '/pautas/' | relative_url }}">Veja as datas livres e proponha o seu</a>
+      Palco em silêncio por enquanto. É só o intervalo.<br>
+      <a class="link" href="{{ '/datas-livres/' | relative_url }}">Veja as datas livres e traga o seu espetáculo</a>
     </p>
   </div>
 </section>
 
-{% include entreato.html i=3 gel="carmim" %}
+{% include entreato.html i=3 gel="carmim" foto="riso" posicao="50% 30%" %}
 
 {%- if ja_passaram.size > 0 -%}
-<section class="secao plateia" aria-labelledby="titulo-passaram">
+<section class="secao claro moldura" aria-labelledby="titulo-passaram">
   <div class="envelope">
-    <h2 class="subtitulo" id="titulo-passaram">Já estiveram em cena</h2>
+    <div class="cabeca">
+      <h2 class="cabeca__titulo" id="titulo-passaram">Já passaram por aqui</h2>
+      <span class="cabeca__fio" aria-hidden="true"></span>
+    </div>
+    <p class="chamada">O espetáculo acaba, a lembrança fica em cartaz.</p>
     <ul class="arquivo">
       {%- for k in ja_passaram limit: 40 -%}
       {%- assign _k = k | split: "|" -%}

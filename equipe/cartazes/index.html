@@ -1,0 +1,94 @@
+---
+layout: default
+title: Gerador de cartazes
+description: Ferramenta da equipe do Teatro Municipal para gerar cartazes em post, story e banner.
+classe_corpo: pagina-gerador
+sem_indexar: true
+---
+{%- include ordenar-espetaculos.html -%}
+<header class="pagina-cabeca envelope">
+  <h1 class="pagina-cabeca__titulo">Cartazes</h1>
+  <p class="pagina-cabeca__intro">Escolha o espetáculo, ajuste a foto e os textos e baixe o cartaz no formato que precisar. O layout é sempre o mesmo, o padrão do teatro.</p>
+</header>
+
+<section class="secao claro moldura" aria-label="Gerador de cartazes">
+  <div class="envelope gerador">
+    <form class="gerador__painel" data-gerador novalidate>
+      <fieldset class="gerador__grupo">
+        <legend>Espetáculo</legend>
+        <label class="campo">
+          <span class="campo__rotulo">Puxar os dados de</span>
+          <select name="espetaculo" data-g-espetaculo>
+            <option value="">Começar em branco</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset class="gerador__grupo">
+        <legend>Formato</legend>
+        <div class="opcoes">
+          <label class="opcao"><input type="radio" name="formato" value="post" checked><span>Post<small>1080 × 1350</small></span></label>
+          <label class="opcao"><input type="radio" name="formato" value="story"><span>Story<small>1080 × 1920</small></span></label>
+          <label class="opcao"><input type="radio" name="formato" value="banner"><span>Banner<small>1920 × 1080</small></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="gerador__grupo">
+        <legend>Foto</legend>
+        <div class="gerador__linha">
+          <label class="botao-arquivo">
+            <input type="file" accept="image/*" data-g-arquivo>
+            <span>Trocar foto</span>
+          </label>
+          <button type="button" class="botao-linha" data-g-foto-site hidden>Voltar à foto do site</button>
+        </div>
+        <p class="campo__ajuda">A foto escolhida fica só no seu computador. Nada é publicado.</p>
+        <label class="campo campo--faixa"><span class="campo__rotulo">Aproximar</span><input type="range" min="1" max="2.5" step="0.05" value="1" name="zoom"></label>
+        <label class="campo campo--faixa"><span class="campo__rotulo">Mover para os lados</span><input type="range" min="0" max="1" step="0.01" value="0.5" name="focoX"></label>
+        <label class="campo campo--faixa"><span class="campo__rotulo">Mover para cima ou para baixo</span><input type="range" min="0" max="1" step="0.01" value="0.5" name="focoY"></label>
+        <label class="marcar"><input type="checkbox" name="fotoColorida"> <span>Foto colorida (o padrão é preto e branco)</span></label>
+      </fieldset>
+
+      <fieldset class="gerador__grupo">
+        <legend>Cor de destaque</legend>
+        <div class="opcoes opcoes--cores">
+          <label class="opcao-cor"><input type="radio" name="cor" value="tijolo" checked><span style="--c:#b3361f">Tijolo</span></label>
+          <label class="opcao-cor"><input type="radio" name="cor" value="ambar"><span style="--c:#a86a12">Âmbar</span></label>
+          <label class="opcao-cor"><input type="radio" name="cor" value="vinho"><span style="--c:#7a1f2b">Vinho</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="gerador__grupo">
+        <legend>Textos</legend>
+        <label class="campo"><span class="campo__rotulo">Título</span><input type="text" name="titulo" autocomplete="off"></label>
+        <label class="campo"><span class="campo__rotulo">Linguagem</span><input type="text" name="genero" autocomplete="off" placeholder="DANÇA"></label>
+        <label class="campo"><span class="campo__rotulo">Grupo ou artista</span><input type="text" name="companhia" autocomplete="off" placeholder="com Cia. de Dança"></label>
+        <label class="campo"><span class="campo__rotulo">Data</span><input type="text" name="linha1" autocomplete="off" placeholder="21 DE NOVEMBRO"></label>
+        <label class="campo"><span class="campo__rotulo">Dia e horário</span><input type="text" name="linha2" autocomplete="off" placeholder="SÁBADO ÀS 20H"></label>
+        <label class="campo"><span class="campo__rotulo">Faixa</span><input type="text" name="faixa" autocomplete="off" placeholder="ENTRADA GRATUITA"></label>
+        <label class="campo"><span class="campo__rotulo">Classificação</span>
+          <select name="classificacao">
+            <option value="">Sem selo</option>
+            <option>Livre</option><option>10 anos</option><option>12 anos</option><option>14 anos</option><option>16 anos</option><option>18 anos</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <div class="gerador__acoes">
+        <button type="button" class="ingresso" data-g-baixar>Baixar este formato</button>
+        <button type="button" class="botao-linha" data-g-baixar-todos>Baixar os três formatos</button>
+      </div>
+      <p class="gerador__aviso" data-g-aviso aria-live="polite"></p>
+    </form>
+
+    <div class="gerador__previa">
+      <div class="gerador__palco" data-g-palco>
+        <canvas data-g-tela role="img" aria-label="Prévia do cartaz"></canvas>
+      </div>
+      <p class="campo__ajuda" data-g-legenda>Post para o feed, 1080 × 1350.</p>
+    </div>
+  </div>
+</section>
+
+<script type="application/json" data-espetaculos>[{%- for k in em_cartaz -%}{%- assign _k = k | split: "|" -%}{%- assign e = site.espetaculos | where: "path", _k[2] | first -%}{% include cartaz-json.html e=e %},{%- endfor -%}{%- for k in ja_passaram -%}{%- assign _k = k | split: "|" -%}{%- assign e = site.espetaculos | where: "path", _k[2] | first -%}{% include cartaz-json.html e=e %},{%- endfor -%}{"_fim":true}]</script>
+<script src="{{ '/assets/js/gerador.js' | relative_url }}" defer></script>

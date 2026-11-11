@@ -1,0 +1,15 @@
+{%- assign _e = include.e -%}
+<li class="vitrine__item" data-fim="{{ include.fim }}">
+  <a class="vitrine__link" href="{{ _e.url | relative_url }}">{% include cartaz.html e=_e %}</a>
+  <div class="vitrine__info">
+    <p class="vitrine__quando">{% include data.html d=_e.data formato="semana" %}, às {% include hora.html h=_e.horario %}{% if _e.sessoes_extras.size > 0 %} (+{{ _e.sessoes_extras.size }}){% endif %}</p>
+    <h3 class="vitrine__titulo">{{ _e.titulo }}</h3>
+    <p class="vitrine__meta">{{ _e.genero }}. {{ _e.ingresso_tipo }}.</p>
+    <div class="vitrine__acoes">
+      {%- if _e.ingresso_link and _e.ingresso_link != "" -%}
+      <a class="ingresso" href="{{ _e.ingresso_link }}" target="_blank" rel="noopener">{% if _e.ingresso_tipo contains "pago" %}Comprar{% else %}Retirar ingresso{% endif %}<span class="visualmente-oculto"> para {{ _e.titulo }} (abre em nova aba)</span></a>
+      {%- endif -%}
+      <a class="link" href="{{ _e.url | relative_url }}">Ver detalhes<span class="visualmente-oculto"> de {{ _e.titulo }}</span></a>
+    </div>
+  </div>
+</li>

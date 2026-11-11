@@ -1,0 +1,9 @@
+{%- comment -%} Escolhe a foto de fundo da página pelo tipo de espetáculo. Resultado em `foto_genero`. {%- endcomment -%}
+{%- assign _g = include.genero | default: "" | downcase -%}
+{%- case _g -%}
+{%- when "dança" -%}{%- assign foto_genero = "bailarina" -%}
+{%- when "música" -%}{%- assign foto_genero = "violao" -%}
+{%- when "circo" or "infantil" -%}{%- assign foto_genero = "trapezio" -%}
+{%- when "teatro" or "mostra" -%}{%- assign foto_genero = "ator-palco" -%}
+{%- else -%}{%- assign foto_genero = "ensaio" -%}
+{%- endcase -%}

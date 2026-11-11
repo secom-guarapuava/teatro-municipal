@@ -1,19 +1,22 @@
 ---
-titulo: Concerto de fim de ano
+titulo: "Concerto de fim de ano"
 data: 2026-12-18
 horario: "20:00"
 sessoes_extras: []
 genero: Música
-companhia: Orquestra de Câmara convidada
-origem: Paraná
+companhia: "Orquestra de Câmara convidada"
+origem: "Paraná"
 classificacao: Livre
-duracao: 1h20
-imagem: ""
+duracao: "1h20"
+imagem: /assets/uploads/exemplo-musico-plateia.jpg
 cor_luz: Âmbar
-resumo: Valsas, trilhas de cinema e clássicos brasileiros para fechar o ano.
-ingresso_tipo: Gratuito, com retirada de ingresso
-ingresso_link: ""
-ingresso_info: Retirada pela internet a partir de 10 de dezembro.
+foto_posicao: Centro
+foto_cor: false
+cartaz_faixa: ""
+resumo: "Valsas, trilhas de cinema e clássicos brasileiros para fechar o ano."
+ingresso_tipo: "Gratuito, com retirada de ingresso"
+ingresso_link: "https://www.sympla.com.br/"
+ingresso_info: "Retirada pela internet a partir de 10 de dezembro."
 acessibilidade: ""
 ficha_tecnica: |-
   Regência: maestro convidado

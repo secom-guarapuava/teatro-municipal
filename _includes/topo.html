@@ -1,4 +1,7 @@
 {%- assign _geral = site.data.geral -%}
+{%- assign _hoje = site.time | date: "%Y-%m-%d" -%}
+{%- assign _livres = 0 -%}
+{%- for d in site.data.pautas.datas_livres -%}{%- assign _dd = d.data | date: "%Y-%m-%d" -%}{%- if _dd >= _hoje -%}{%- assign _livres = _livres | plus: 1 -%}{%- endif -%}{%- endfor -%}
 {%- if _geral.aviso and _geral.aviso != "" -%}
 <div class="aviso">
   {%- if _geral.aviso_link and _geral.aviso_link != "" -%}<a href="{{ _geral.aviso_link }}">{{ _geral.aviso }}</a>{%- else -%}<p>{{ _geral.aviso }}</p>{%- endif -%}
@@ -6,21 +9,21 @@
 {%- endif -%}
 <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
 <header class="topo" data-topo>
-  <a class="topo__marca" href="{{ '/' | relative_url }}" aria-label="Teatro Municipal de Guarapuava {{ site.data.geral.nome_teatro }}, página inicial">
-    <span class="topo__marca-linha">Teatro Municipal de Guarapuava</span>
-    {%- if site.data.geral.nome_teatro and site.data.geral.nome_teatro != "" -%}<span class="topo__marca-linha topo__marca-nome">{{ site.data.geral.nome_teatro }}</span>{%- endif -%}
+  <a class="topo__marca" href="{{ '/' | relative_url }}" aria-label="Teatro Municipal de Guarapuava {{ _geral.nome_teatro }}, página inicial">
+    <span class="topo__marca-nome">Teatro Municipal de Guarapuava</span>
+    {%- if _geral.nome_teatro and _geral.nome_teatro != "" -%}<span class="topo__marca-homenagem">{{ _geral.nome_teatro }}</span>{%- endif -%}
   </a>
   <button class="topo__abrir" type="button" aria-expanded="false" aria-controls="menu-principal" data-menu-botao>
     <span class="topo__abrir-texto">Menu</span>
     <span class="topo__abrir-icone" aria-hidden="true"></span>
   </button>
   <nav class="topo__nav" id="menu-principal" aria-label="Principal" data-menu>
-    {%- assign _links = "programacao|Programação,pautas|Pautas,acervo|Acervo,o-teatro|O teatro" | split: "," -%}
+    {%- assign _links = "programacao|Programação,datas-livres|Datas livres,credenciamento|Credenciamento,acervo|Acervo,o-teatro|O teatro" | split: "," -%}
     <ul>
       {%- for l in _links -%}
       {%- assign _l = l | split: "|" -%}
       {%- capture _href -%}/{{ _l[0] }}/{%- endcapture -%}
-      <li><a href="{{ _href | relative_url }}"{% if page.url == _href or page.secao == _l[0] %} aria-current="page"{% endif %}>{{ _l[1] }}</a></li>
+      <li><a href="{{ _href | relative_url }}"{% if page.url == _href or page.secao == _l[0] %} aria-current="page"{% endif %}{% if _l[0] == "datas-livres" %} class="topo__destaque"{% endif %}>{{ _l[1] }}{% if _l[0] == "datas-livres" and _livres > 0 %} <span class="topo__contagem" data-contagem-livres aria-label="{{ _livres }} datas disponíveis">{{ _livres }}</span>{% endif %}</a></li>
       {%- endfor -%}
       <li><a href="#visite" data-fecha-menu>Como chegar</a></li>
     </ul>

@@ -10,49 +10,51 @@ secao: programacao
 {%- assign _passou = false -%}{%- if _fim < _hoje -%}{%- assign _passou = true -%}{%- endif -%}
 {%- assign _g = site.data.geral -%}
 {%- capture _local -%}Teatro Municipal {{ _g.nome_teatro }}, {{ _g.endereco }}, {{ _g.bairro_cidade }}{%- endcapture -%}
+{%- include foto-do-genero.html genero=e.genero -%}
 
 <article data-espetaculo data-fim="{{ _fim }}">
-  <header class="espetaculo-cabeca envelope">
-    <div>
-      {% capture _alt %}Cartaz de {{ e.titulo }}{% endcapture %}
-      {% include cartaz.html e=e grande=true loading="eager" alt=_alt %}
-    </div>
-    <div>
-      <a class="espetaculo__voltar" href="{{ '/programacao/' | relative_url }}">Voltar para a programação</a>
-      <p class="espetaculo__genero">{{ e.genero }}{% if e.companhia and e.companhia != "" %}, com {{ e.companhia }}{% endif %}</p>
-      <h1 class="espetaculo__titulo">{{ e.titulo }}</h1>
-      {%- if e.resumo and e.resumo != "" -%}<p class="espetaculo__resumo">{{ e.resumo }}</p>{%- endif -%}
+  <header class="pagina-cabeca" style="padding:0">
+    {% include fundo.html foto=foto_genero posicao="50% 35%" %}
+    <div class="envelope espetaculo-cabeca">
+      <div>{% include cartaz.html e=e grande=true %}</div>
+      <div>
+        <a class="espetaculo__voltar" href="{{ '/programacao/' | relative_url }}">Voltar para a programação</a>
+        <p class="espetaculo__genero">{{ e.genero }}{% if e.companhia and e.companhia != "" %}, com {{ e.companhia }}{% endif %}</p>
+        <h1 class="espetaculo__titulo">{{ e.titulo }}</h1>
+        {%- if e.resumo and e.resumo != "" -%}<p class="espetaculo__resumo">{{ e.resumo }}</p>{%- endif -%}
 
-      <ul class="espetaculo__sessoes" aria-label="Sessões">
-        {%- assign _sessoes = "" | split: "" -%}
-        {%- capture _primeira -%}{{ _ini }}|{{ e.horario }}{%- endcapture -%}
-        {%- assign _sessoes = _sessoes | push: _primeira -%}
-        {%- for s in e.sessoes_extras -%}{%- capture _x -%}{{ s.data | date: "%Y-%m-%d" }}|{{ s.horario }}{%- endcapture -%}{%- assign _sessoes = _sessoes | push: _x -%}{%- endfor -%}
-        {%- for s in _sessoes -%}
-        {%- assign _s = s | split: "|" -%}
-        {%- assign _hm = _s[1] | default: "20:00" | split: ":" -%}
-        {%- assign _h2 = _hm[0] | plus: 2 -%}{%- if _h2 > 23 -%}{%- assign _h2 = 23 -%}{%- endif -%}
-        {%- capture _comeco -%}{{ _s[0] | remove: "-" }}T{{ _hm[0] }}{{ _hm[1] | default: "00" }}00{%- endcapture -%}
-        {%- capture _final -%}{{ _s[0] | remove: "-" }}T{% if _h2 < 10 %}0{% endif %}{{ _h2 }}{{ _hm[1] | default: "00" }}00{%- endcapture -%}
-        <li class="espetaculo__sessao">
-          <span class="espetaculo__sessao-quando">{% assign _sd0 = _s[0] %}{% assign _sh1 = _s[1] %}{% include data.html d=_sd0 formato="semana" %}, às {% include hora.html h=_sh1 %}</span>
-          <a class="link espetaculo__agenda" data-so-futuro{% if _passou %} hidden{% endif %} target="_blank" rel="noopener"
-            href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text={{ e.titulo | url_encode }}&amp;dates={{ _comeco }}/{{ _final }}&amp;ctz=America/Sao_Paulo&amp;location={{ _local | url_encode }}&amp;details={{ e.resumo | default: '' | url_encode }}">Adicionar à agenda<span class="visualmente-oculto"> (abre em nova aba)</span></a>
-        </li>
-        {%- endfor -%}
-      </ul>
+        <ul class="espetaculo__sessoes" aria-label="Sessões">
+          {%- assign _sessoes = "" | split: "" -%}
+          {%- capture _primeira -%}{{ _ini }}|{{ e.horario }}{%- endcapture -%}
+          {%- assign _sessoes = _sessoes | push: _primeira -%}
+          {%- for s in e.sessoes_extras -%}{%- capture _x -%}{{ s.data | date: "%Y-%m-%d" }}|{{ s.horario }}{%- endcapture -%}{%- assign _sessoes = _sessoes | push: _x -%}{%- endfor -%}
+          {%- for s in _sessoes -%}
+          {%- assign _s = s | split: "|" -%}
+          {%- assign _hm = _s[1] | default: "20:00" | split: ":" -%}
+          {%- assign _h2 = _hm[0] | plus: 2 -%}{%- if _h2 > 23 -%}{%- assign _h2 = 23 -%}{%- endif -%}
+          {%- capture _comeco -%}{{ _s[0] | remove: "-" }}T{{ _hm[0] }}{{ _hm[1] | default: "00" }}00{%- endcapture -%}
+          {%- capture _final -%}{{ _s[0] | remove: "-" }}T{% if _h2 < 10 %}0{% endif %}{{ _h2 }}{{ _hm[1] | default: "00" }}00{%- endcapture -%}
+          <li class="espetaculo__sessao">
+            {%- assign _sd0 = _s[0] -%}{%- assign _sh1 = _s[1] -%}
+            <span class="espetaculo__sessao-quando">{% include data.html d=_sd0 formato="semana" %}, às {% include hora.html h=_sh1 %}</span>
+            <a class="link espetaculo__agenda" data-so-futuro{% if _passou %} hidden{% endif %} target="_blank" rel="noopener"
+              href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text={{ e.titulo | url_encode }}&amp;dates={{ _comeco }}/{{ _final }}&amp;ctz=America/Sao_Paulo&amp;location={{ _local | url_encode }}&amp;details={{ e.resumo | default: '' | url_encode }}">Adicionar à agenda<span class="visualmente-oculto"> (abre em nova aba)</span></a>
+          </li>
+          {%- endfor -%}
+        </ul>
 
-      <div class="espetaculo__ingresso" data-so-futuro{% if _passou %} hidden{% endif %}>
-        {%- if e.ingresso_link and e.ingresso_link != "" -%}
-        <a class="ingresso" href="{{ e.ingresso_link }}" target="_blank" rel="noopener">{% if e.ingresso_tipo contains "pago" %}Comprar ingresso{% else %}Retirar ingresso{% endif %}<span class="visualmente-oculto"> (abre em nova aba)</span></a>
-        {%- endif -%}
-        <p class="espetaculo__ingresso-info">{{ e.ingresso_tipo }}.{% if e.ingresso_info and e.ingresso_info != "" %} {{ e.ingresso_info }}{% endif %}</p>
+        <div class="espetaculo__ingresso" data-so-futuro{% if _passou %} hidden{% endif %}>
+          {%- if e.ingresso_link and e.ingresso_link != "" -%}
+          <a class="ingresso" href="{{ e.ingresso_link }}" target="_blank" rel="noopener">{% if e.ingresso_tipo contains "pago" %}Comprar ingresso{% else %}Retirar ingresso{% endif %}<span class="visualmente-oculto"> (abre em nova aba)</span></a>
+          {%- endif -%}
+          <p class="espetaculo__ingresso-info">{{ e.ingresso_tipo }}.{% if e.ingresso_info and e.ingresso_info != "" %} {{ e.ingresso_info }}{% endif %}</p>
+        </div>
+        <p class="espetaculo__passou" data-passou{% unless _passou %} hidden{% endunless %}>Esta apresentação já aconteceu.</p>
       </div>
-      <p class="espetaculo__passou" data-passou{% unless _passou %} hidden{% endunless %}>Esta apresentação já aconteceu.</p>
     </div>
   </header>
 
-  <section class="secao plateia" aria-label="Sobre o espetáculo">
+  <section class="secao claro moldura" aria-label="Sobre o espetáculo">
     <div class="envelope duas-colunas">
       <div class="texto-corrido">
         {%- capture _src -%}src="{{ site.baseurl }}/assets/uploads{%- endcapture -%}
@@ -82,26 +84,32 @@ secao: programacao
   </section>
 </article>
 
-{% include entreato.html i=7 gel="ambar" %}
+{% include entreato.html i=7 gel="ambar" foto="cantor" posicao="50% 40%" %}
 
 {%- include ordenar-espetaculos.html -%}
 {%- assign _outros = 0 -%}
 {%- for k in em_cartaz -%}{%- assign _k = k | split: "|" -%}{%- if _k[2] != e.path -%}{%- assign _outros = _outros | plus: 1 -%}{%- endif -%}{%- endfor -%}
 {%- if _outros > 0 -%}
-<section class="secao secao--luz" aria-labelledby="titulo-outros">
+<section class="secao moldura" aria-labelledby="titulo-outros">
   <div class="envelope">
-    <h2 class="subtitulo" id="titulo-outros">Também em cartaz</h2>
-    <ol class="sessoes" data-sessoes>
-      {%- assign _n = 0 -%}
-      {%- for k in em_cartaz -%}
-      {%- assign _k = k | split: "|" -%}
-      {%- if _k[2] != e.path and _n < 3 -%}
-      {%- assign _n = _n | plus: 1 -%}
-      {%- assign o = site.espetaculos | where: "path", _k[2] | first -%}
-      {% assign _kf = _k[1] %}{% include sessao.html e=o fim=_kf %}
-      {%- endif -%}
-      {%- endfor -%}
-    </ol>
+    <div class="cabeca">
+      <h2 class="cabeca__titulo" id="titulo-outros">Também em cartaz</h2>
+      <span class="cabeca__fio" aria-hidden="true"></span>
+    </div>
+    <div class="vitrine">
+      <ul class="vitrine__trilho">
+        {%- assign _n = 0 -%}
+        {%- for k in em_cartaz -%}
+        {%- assign _k = k | split: "|" -%}
+        {%- if _k[2] != e.path and _n < 6 -%}
+        {%- assign _n = _n | plus: 1 -%}
+        {%- assign o = site.espetaculos | where: "path", _k[2] | first -%}
+        {%- assign _kf = _k[1] -%}
+        {% include vitrine-item.html e=o fim=_kf %}
+        {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
   </div>
 </section>
 {%- endif -%}

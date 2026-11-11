@@ -1,0 +1,75 @@
+---
+layout: default
+title: Datas livres
+description: Dias em que o palco do Teatro Municipal de Guarapuava está disponível e como pedir uma data.
+secao: datas-livres
+---
+{%- assign _p = site.data.pautas -%}
+{%- assign _g = site.data.geral -%}
+<header class="pagina-cabeca">
+  {% include fundo.html foto="musico-plateia" posicao="50% 45%" %}
+  <div class="envelope">
+    <h1 class="pagina-cabeca__titulo">Datas livres</h1>
+    <p class="pagina-cabeca__intro">O palco está esperando. Escolha o dia, traga a sua história.</p>
+    <p class="pagina-cabeca__apoio">Estas datas ficaram livres depois do credenciamento e podem ser pedidas a qualquer momento. Quando uma data é ocupada, ela some da lista.</p>
+  </div>
+</header>
+
+<section class="secao claro moldura" id="calendario" aria-labelledby="titulo-calendario">
+  <div class="envelope duas-colunas">
+    <div>
+      <h2 class="subtitulo" id="titulo-calendario">Calendário</h2>
+      <div class="calendario" data-calendario hidden>
+        <div class="calendario__cabeca">
+          <p class="calendario__mes" data-cal-mes aria-live="polite"></p>
+          <div class="calendario__navegar">
+            <button class="botao-redondo" type="button" data-cal-anterior aria-label="Mês anterior">‹</button>
+            <button class="botao-redondo" type="button" data-cal-seguinte aria-label="Próximo mês">›</button>
+          </div>
+        </div>
+        <div class="calendario__grade" data-cal-grade></div>
+        <div class="calendario__legenda"><span><i aria-hidden="true"></i> Data livre</span></div>
+        <p class="calendario__detalhe" data-cal-detalhe aria-live="polite"></p>
+      </div>
+    </div>
+    <div>
+      <h2 class="subtitulo">Todas as datas</h2>
+      {% include datas-livres.html %}
+    </div>
+  </div>
+</section>
+
+<section class="secao moldura" id="como-pedir" aria-labelledby="titulo-pedir">
+  {% include fundo.html foto="ensaio" posicao="50% 40%" classe="fundo-artista--direita" %}
+  <div class="envelope duas-colunas">
+    <div>
+      <h2 class="subtitulo" id="titulo-pedir">Como pedir uma data</h2>
+      <ol class="passos">
+        <li><strong>Chame a Secretaria de Cultura no WhatsApp</strong>Confira se a data que você quer continua livre.</li>
+        <li><strong>Envie um ofício para o e-mail da Cultura</strong>{{ _p.orientacoes_oficio }}</li>
+        <li><strong>Aguarde a resposta</strong>O deferimento, ou não, do pedido chega pelo mesmo e-mail.</li>
+      </ol>
+      <div class="pautas-status__acoes" style="margin-top:2rem">
+        {%- if _g.whatsapp and _g.whatsapp != "" -%}
+        <a class="ingresso" href="https://wa.me/55{{ _g.whatsapp | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}?text={{ 'Olá! Gostaria de consultar uma data para o Teatro Municipal.' | url_encode }}" target="_blank" rel="noopener">Chamar no WhatsApp<span class="visualmente-oculto"> (abre em nova aba)</span></a>
+        {%- endif -%}
+        {%- if _g.email_cultura and _g.email_cultura != "" -%}
+        <a class="botao-linha" href="mailto:{{ _g.email_cultura }}?subject={{ 'Ofício: pedido de data no Teatro Municipal' | url_encode }}">Enviar ofício por e-mail</a>
+        {%- endif -%}
+      </div>
+    </div>
+    <div>
+      <dl class="ficha">
+        <dt>WhatsApp</dt>
+        <dd>{% if _g.whatsapp and _g.whatsapp != "" %}{{ _g.whatsapp }}{% else %}Secretaria Municipal de Cultura{% endif %}</dd>
+        <dt>E-mail do ofício</dt>
+        <dd>{% if _g.email_cultura and _g.email_cultura != "" %}{{ _g.email_cultura }}{% else %}E-mail da Secretaria de Cultura{% endif %}</dd>
+        {%- if _g.telefone and _g.telefone != "" -%}<dt>Telefone</dt><dd>{{ _g.telefone }}</dd>{%- endif -%}
+        <dt>Temporada inteira</dt>
+        <dd><a class="link" href="{{ '/credenciamento/' | relative_url }}">Credenciamento anual</a>, de {% include data.html d=_p.abertura %} a {% include data.html d=_p.encerramento %}</dd>
+      </dl>
+    </div>
+  </div>
+</section>
+
+{% include entreato.html i=4 gel="ambar" foto="musico-plateia" posicao="50% 50%" %}

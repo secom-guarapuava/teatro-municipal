@@ -1,7 +1,10 @@
 {%- assign _g = site.data.geral -%}
 {%- assign _p = site.data.pautas -%}
 <footer class="rodape" id="visite">
-  <div class="pano" data-pano aria-hidden="true"><p class="pano__texto">Cai o pano.</p></div>
+  <div class="pano" data-pano aria-hidden="true">
+    <p class="pano__texto">Cai o pano.</p>
+    <p class="pano__sub">Fica a cena.</p>
+  </div>
   <div class="rodape__interno">
   <div class="rodape__grade">
     <section class="rodape__bloco" aria-labelledby="rodape-chegar">
@@ -24,21 +27,29 @@
         {%- if _p.link_formulario and _p.link_formulario != "" -%}<li><a class="link" href="{{ _p.link_formulario }}" target="_blank" rel="noopener">Formulário de credenciamento</a></li>{%- endif -%}
         {%- if _g.link_ingressos and _g.link_ingressos != "" -%}<li><a class="link" href="{{ _g.link_ingressos }}" target="_blank" rel="noopener">Retirada de ingressos</a></li>{%- endif -%}
         <li><a class="link" href="{{ '/programacao/' | relative_url }}">Programação completa</a></li>
-        <li><a class="link" href="{{ '/pautas/' | relative_url }}">Datas livres e credenciamento</a></li>
-        <li><a class="link" href="{{ '/acervo/' | relative_url }}">Acervo de fotos</a></li>
+        <li><a class="link" href="{{ '/datas-livres/' | relative_url }}">Datas livres</a></li>
+        <li><a class="link" href="{{ '/credenciamento/' | relative_url }}">Credenciamento</a></li>
+        <li><a class="link" href="{{ '/equipe/cartazes/' | relative_url }}">Gerador de cartazes (equipe)</a></li>
       </ul>
     </section>
     <div class="rodape__mapa">
       <iframe title="Mapa com a localização do Teatro Municipal de Guarapuava" src="https://www.google.com/maps?q={{ _g.endereco | append: ', ' | append: _g.bairro_cidade | url_encode }}&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
-  <div class="rodape__base">
-    {%- if _g.logo_prefeitura and _g.logo_prefeitura != "" -%}
-    <img class="rodape__logo" src="{{ _g.logo_prefeitura | relative_url }}" alt="Prefeitura de Guarapuava" loading="lazy">
-    {%- else -%}
-    <p class="rodape__assinatura">Prefeitura de Guarapuava<br>Secretaria Municipal de Cultura</p>
-    {%- endif -%}
-    {%- if _g.credito_fotos and _g.credito_fotos != "" -%}<p class="rodape__credito">Fotos do teatro: {{ _g.credito_fotos }}</p>{%- endif -%}
   </div>
+  <div class="rodape__base">
+    <div class="rodape__base-interno">
+      <p class="rodape__credito">{% if _g.credito_fotos and _g.credito_fotos != "" %}Fotos do teatro: {{ _g.credito_fotos }}. {% endif %}Fotos de artistas: Pexels.</p>
+      <div class="rodape__apoio">
+        {%- if _g.logo_prefeitura_branca and _g.logo_prefeitura_branca != "" -%}
+        <img class="rodape__logo" src="{{ _g.logo_prefeitura_branca | relative_url }}" alt="Prefeitura de Guarapuava" loading="lazy">
+        {%- elsif _g.logo_apoio and _g.logo_apoio != "" -%}
+        <span class="rodape__apoio-rotulo">{{ _g.texto_apoio | default: "apoio:" }}</span>
+        <img class="rodape__logo" src="{{ _g.logo_apoio | relative_url }}" alt="Secretaria Municipal de Cultura de Guarapuava" loading="lazy">
+        {%- else -%}
+        <p>Prefeitura de Guarapuava<br>Secretaria Municipal de Cultura</p>
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 </footer>

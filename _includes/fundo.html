@@ -1,0 +1,3 @@
+{%- comment -%} Foto de artista em preto e branco, quase invisível, só para dar o tom da seção. {%- endcomment -%}
+{%- if include.src -%}{%- assign _src = include.src -%}{%- else -%}{%- assign _src = '/assets/img/artistas/' | append: include.foto | append: '.jpg' -%}{%- endif -%}
+<img class="fundo-artista{% if include.classe %} {{ include.classe }}{% endif %}" src="{{ _src | relative_url }}" alt="" aria-hidden="true" loading="lazy" decoding="async"{% if include.posicao %} style="object-position: {{ include.posicao }}"{% endif %}>

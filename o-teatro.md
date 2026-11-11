@@ -2,7 +2,7 @@
 layout: teatro
 title: O teatro
 permalink: /o-teatro/
-subtitulo: Uma fachada que lembra o passado da cidade e um palco feito para o que ela ainda vai criar.
+subtitulo: Tijolo de ontem, palco de agora. Uma fachada que lembra o passado da cidade e um palco feito para o que ela ainda vai criar.
 imagem: /assets/img/teatro-fachada-1000.jpg
 imagem_descricao: Fachada do teatro com tijolos aparentes e janelas em arco, ao lado do foyer de vidro.
 og_imagem: /assets/img/teatro-fachada-1000.jpg

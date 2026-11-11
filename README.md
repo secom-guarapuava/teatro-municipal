@@ -3,12 +3,14 @@
 Site estático (Jekyll) publicado no GitHub Pages, com painel de edição pelo Pages CMS para a equipe do teatro atualizar sem mexer em código.
 
 - Guia da equipe do teatro: [COMO-ATUALIZAR.md](COMO-ATUALIZAR.md)
+- Gerador de cartazes (post, story, banner): `/equipe/cartazes/`
+- Créditos das fotos de artistas: [CREDITOS.md](CREDITOS.md)
 - Configuração do painel: [`.pages.yml`](.pages.yml)
 - Publicação automática: [`.github/workflows/publicar.yml`](.github/workflows/publicar.yml)
 
 ## Colocar no ar (uma vez só)
 
-1. **Criar o repositório** na organização `secom-guarapuava` (sugestão: `teatro-municipal`, público) e enviar estes arquivos para a branch `main`.
+1. **Criar o repositório** na organização `secom-guarapuava` (sugestão: `teatro-municipal`, público) e enviar estes arquivos para a branch `main`. Atenção: o upload pelo navegador ignora arquivos que começam com ponto (`.github/` e `.pages.yml`). Crie esses dois pelo botão *Add file → Create new file* ou envie tudo com o GitHub Desktop.
 2. **Ativar o GitHub Pages**: Settings → Pages → *Build and deployment* → Source: **GitHub Actions**.
    A primeira publicação roda sozinha. O endereço fica `https://secom-guarapuava.github.io/teatro-municipal/`.
 3. **Conectar o painel**:
@@ -27,7 +29,9 @@ Site estático (Jekyll) publicado no GitHub Pages, com painel de edição pelo P
 | Acervo (capa + link do álbum externo) | `_acervo/*.md` | Painel → Acervo de fotos |
 | Frases dos entreatos | `_data/frases.yml` | Painel → Frases |
 | Página “O teatro” | `o-teatro.md` | Painel → Página O teatro |
-| Contatos, aviso do topo, logo | `_data/geral.yml` | Painel → Contatos e aviso do topo |
+| Contatos, aviso do topo, logo de apoio | `_data/geral.yml` | Painel → Contatos e aviso do topo |
+| Cartaz padrão (desenho) | `assets/js/cartaz.js` | Só a parte técnica |
+| Fotos de artistas dos fundos | `assets/img/artistas/` | Só a parte técnica |
 | Fotos enviadas pelo painel | `assets/uploads/` | Painel (upload) |
 
 - Cada salvamento no painel vira um commit e dispara a publicação (1–2 min).
@@ -48,5 +52,8 @@ Abre em http://localhost:4000.
 ## Identidade
 
 - Tipografia: Bodoni Moda (títulos e frases, herança dos cartazes de teatro) e Hanken Grotesk (textos). Arquivos locais em `assets/fonts/`, sem Google Fonts.
-- Cores (`assets/css/site.css`): preto de rotunda, creme da luz de plateia, âmbar dos refletores, tijolo da fachada e o vermelho da cortina.
-- Fotos do prédio: Zaca.
+- Superfícies: o palco (escuro, com fotos de artistas em preto e branco quase invisíveis) e o papel (creme, como um programa impresso). Toda seção tem moldura de filete.
+- Cores: creme, tinta, âmbar, tijolo (#b3361f), vinho e o vermelho da cortina. Sem estrelas como ornamento: os símbolos são losangos e pontos.
+- Tipografia: Bodoni Moda só em palavras curtas e grandes; Newsreader nas frases; Hanken Grotesk na interface; League Gothic nos cartazes.
+- Cartaz padrão: papel creme, moldura dupla, foto em arco (como as janelas da fachada) em preto e branco, faixa colorida e logo da Secretaria de Cultura com "apoio:".
+- Fotos do prédio: Zaca. Fotos de artistas: Pexels (ver CREDITOS.md).
