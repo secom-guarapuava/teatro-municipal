@@ -57,7 +57,7 @@ content:
         label: Linguagem
         type: select
         options:
-          values: [Teatro, Dança, Música, Circo, Infantil, Ópera, Festival, Mostra, Cinema, Outro]
+          values: [Teatro, Dança, Música, Circo, Infantil, Ópera, Festival, Mostra, Cinema, Evento, Outro]
       - name: companhia
         label: Grupo, companhia ou artista
         type: string
@@ -74,9 +74,13 @@ content:
         label: Duração
         description: "Exemplo: 1h20 ou 55 minutos"
         type: string
+      - name: arte_propria
+        label: Cartaz próprio (arte pronta do grupo)
+        description: Se o grupo já tem um cartaz pronto, suba aqui. O site mostra essa arte do jeito que ela é, no lugar do cartaz padrão. Deixe vazio para usar o cartaz padrão do teatro.
+        type: image
       - name: imagem
-        label: Foto do espetáculo
-        description: Entra no arco do cartaz padrão, em preto e branco. Sem foto, o cartaz usa uma foto do teatro.
+        label: Foto do espetáculo (para o cartaz padrão)
+        description: Entra no arco do cartaz padrão, em preto e branco. Sem foto, o cartaz usa uma foto do teatro. Não é usada quando há cartaz próprio.
         type: image
       - name: foto_posicao
         label: Enquadramento da foto no cartaz
