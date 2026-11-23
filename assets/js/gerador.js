@@ -17,6 +17,7 @@ function iniciarGerador() {
   var seletor = form.querySelector('[data-g-espetaculo]');
   var arquivo = form.querySelector('[data-g-arquivo]');
   var fotoSite = form.querySelector('[data-g-foto-site]');
+  var notaArte = form.querySelector('[data-g-arte]');
 
   var LEGENDAS = { post: 'Post para o feed, 1080 × 1350.', story: 'Story, 1080 × 1920. As faixas de cima e de baixo ficam livres para os botões do Instagram.', banner: 'Banner, 1920 × 1080. Serve para telão, site e capa de evento.' };
   var estado = { formato: 'post', d: Cartaz.dadosDoEspetaculo({}, geral), fotoDoSite: '', slug: 'cartaz' };
@@ -55,6 +56,7 @@ function iniciarGerador() {
       estado.slug = raw.slug || 'cartaz';
     }
     fotoSite.hidden = true;
+    if (notaArte) notaArte.hidden = !(raw && raw.arte_propria);
     arquivo.value = '';
     preencher();
     desenhar();

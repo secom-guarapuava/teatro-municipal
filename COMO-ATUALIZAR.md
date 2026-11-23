@@ -28,7 +28,8 @@ Menu **Espetáculos** → **Add an entry**.
 
 - **Nome**, **data** e **horário** (no formato `20:00`) são o essencial.
 - Tem mais de uma sessão? Use **Outras sessões**.
-- **Foto do espetáculo**: entra no arco do cartaz padrão, em preto e branco. Se o principal da foto estiver no alto, escolha o enquadramento **Acima**. Sem foto, o cartaz usa uma foto do teatro.
+- **Cartaz próprio**: se o grupo já mandou um cartaz pronto e bonito, suba a arte aqui. O site mostra a arte do jeito que ela é, sem cortes, no lugar do cartaz padrão. Deixe vazio para usar o cartaz padrão do teatro.
+- **Foto do espetáculo**: só vale para o cartaz padrão. Entra no arco do cartaz padrão, em preto e branco. Se o principal da foto estiver no alto, escolha o enquadramento **Acima**. Sem foto, o cartaz usa uma foto do teatro.
 - **Cor de destaque do cartaz**: tijolo, âmbar ou vinho. Muda a faixa, os filetes e os detalhes.
 - **Resumo em uma frase**: é o que aparece quando alguém compartilha o link no WhatsApp.
 - **Link do ingresso**: o link do Sympla ou da página de retirada. Sem link, o botão de ingresso não aparece.

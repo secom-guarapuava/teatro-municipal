@@ -4,7 +4,7 @@
   <div class="vitrine__info">
     <p class="vitrine__quando">{% include data.html d=_e.data formato="semana" %}, às {% include hora.html h=_e.horario %}{% if _e.sessoes_extras.size > 0 %} (+{{ _e.sessoes_extras.size }}){% endif %}</p>
     <h3 class="vitrine__titulo">{{ _e.titulo }}</h3>
-    <p class="vitrine__meta">{{ _e.genero }}. {{ _e.ingresso_tipo }}.</p>
+    <p class="vitrine__meta">{{ _e.genero }}.{% if _e.ingresso_tipo and _e.ingresso_tipo != "" %} {{ _e.ingresso_tipo }}.{% endif %}</p>
     <div class="vitrine__acoes">
       {%- if _e.ingresso_link and _e.ingresso_link != "" -%}
       <a class="ingresso" href="{{ _e.ingresso_link }}" target="_blank" rel="noopener">{% if _e.ingresso_tipo contains "pago" %}Comprar{% else %}Retirar ingresso{% endif %}<span class="visualmente-oculto"> para {{ _e.titulo }} (abre em nova aba)</span></a>

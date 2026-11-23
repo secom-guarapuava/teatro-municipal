@@ -47,7 +47,9 @@ secao: programacao
           {%- if e.ingresso_link and e.ingresso_link != "" -%}
           <a class="ingresso" href="{{ e.ingresso_link }}" target="_blank" rel="noopener">{% if e.ingresso_tipo contains "pago" %}Comprar ingresso{% else %}Retirar ingresso{% endif %}<span class="visualmente-oculto"> (abre em nova aba)</span></a>
           {%- endif -%}
-          <p class="espetaculo__ingresso-info">{{ e.ingresso_tipo }}.{% if e.ingresso_info and e.ingresso_info != "" %} {{ e.ingresso_info }}{% endif %}</p>
+          {%- if e.ingresso_tipo and e.ingresso_tipo != "" or e.ingresso_info and e.ingresso_info != "" -%}
+          <p class="espetaculo__ingresso-info">{% if e.ingresso_tipo and e.ingresso_tipo != "" %}{{ e.ingresso_tipo }}. {% endif %}{{ e.ingresso_info }}</p>
+          {%- endif -%}
         </div>
         <p class="espetaculo__passou" data-passou{% unless _passou %} hidden{% endunless %}>Esta apresentação já aconteceu.</p>
       </div>
@@ -66,8 +68,8 @@ secao: programacao
           {%- if e.companhia and e.companhia != "" -%}<dt>Com</dt><dd>{{ e.companhia }}</dd>{%- endif -%}
           {%- if e.origem and e.origem != "" -%}<dt>De</dt><dd>{{ e.origem }}</dd>{%- endif -%}
           {%- if e.duracao and e.duracao != "" -%}<dt>Duração</dt><dd>{{ e.duracao }}</dd>{%- endif -%}
-          <dt>Classificação</dt><dd>{{ e.classificacao | default: "Livre" }}</dd>
-          <dt>Ingresso</dt><dd>{{ e.ingresso_tipo }}</dd>
+          {%- if e.classificacao and e.classificacao != "" -%}<dt>Classificação</dt><dd>{{ e.classificacao }}</dd>{%- endif -%}
+          {%- if e.ingresso_tipo and e.ingresso_tipo != "" -%}<dt>Ingresso</dt><dd>{{ e.ingresso_tipo }}</dd>{%- endif -%}
           {%- if e.acessibilidade and e.acessibilidade != "" -%}<dt>Acessibilidade</dt><dd>{{ e.acessibilidade }}</dd>{%- endif -%}
           <dt>Local</dt><dd>Teatro Municipal {{ _g.nome_teatro }}<br>{{ _g.endereco }}</dd>
         </dl>
