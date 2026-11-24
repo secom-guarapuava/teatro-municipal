@@ -1,17 +1,3 @@
-datas_livres:
-  - data: 2028-03-27
-    periodo: Noite
-  - data: 2026-11-26
-    periodo: Dia inteiro
-  - data: 2026-12-03
-    periodo: Noite
-  - data: 2026-12-06
-    periodo: Tarde
-    observacao: Montagem a partir das 13h
-  - data: 2026-12-10
-    periodo: Dia inteiro
-  - data: 2026-12-17
-    periodo: Noite
 temporada: 2027
 abertura: 2026-12-26
 encerramento: 2027-01-30
