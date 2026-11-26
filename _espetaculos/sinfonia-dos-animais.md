@@ -13,10 +13,9 @@ foto_cor: true
 cor_luz: Tijolo
 cartaz_faixa: Ingresso um brinquedo na hora do evento
 ingresso_tipo: Entrada franca
-ingresso_link: Evento gratuito com doação de um brinquedo
 ingresso_info: Entrada gratuita com doação de um brinquedo
 ficha_tecnica: Agma Musicoterapia
-destaque: false
+destaque: true
 ---
 **A magia da música vai tomar conta do Teatro Municipal!**
 
