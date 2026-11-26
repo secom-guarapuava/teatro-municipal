@@ -9,7 +9,7 @@ classificacao: Livre
 arte_propria: /assets/uploads/2ba9ebf2-bba1-43d9-a32f-5e1b75c615e3.jpg
 imagem: /assets/uploads/2ba9ebf2-bba1-43d9-a32f-5e1b75c615e3-1.jpg
 foto_posicao: Centro
-foto_cor: false
+foto_cor: true
 cor_luz: Tijolo
 ingresso_tipo: Entrada franca
 destaque: true
