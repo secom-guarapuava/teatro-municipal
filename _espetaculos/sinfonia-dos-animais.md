@@ -11,6 +11,8 @@ imagem: /assets/uploads/e931a734-5a7a-444f-be9f-6d5f43a2d131-1.jpg
 foto_posicao: Centro
 foto_cor: true
 cor_luz: Tijolo
+cartaz_faixa: Ingresso um brinquedo na hora do evento
+ingresso_tipo: Entrada franca
 ingresso_link: Evento gratuito com doação de um brinquedo
 ingresso_info: Entrada gratuita com doação de um brinquedo
 ficha_tecnica: Agma Musicoterapia
